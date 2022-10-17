@@ -2,6 +2,7 @@ using FishNet.Object;
 using Seance.Level;
 using Seance.Networking;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 namespace Seance.Player
 {
@@ -12,6 +13,7 @@ namespace Seance.Player
 
 		[Header("References")]
 		[SerializeField] GameObject _camera;
+		[SerializeField] PlayerInput _input;
 
 		#region Connection to server
 
@@ -48,6 +50,7 @@ namespace Seance.Player
 			if (!IsOwner)
 			{
 				Destroy(_camera.gameObject);
+				Destroy(_input);
 				return;
 			}
 
