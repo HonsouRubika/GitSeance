@@ -6,6 +6,7 @@ using System;
 public abstract class MonoStateMachine : MonoBehaviour
 {
 	[SerializeField] InitMode _initMode = InitMode.InitOnAwake;
+	[SerializeField] MonoState _firstState;
 
 	bool _initialized = false;
 	bool _isPlaying = false;
@@ -66,7 +67,7 @@ public abstract class MonoStateMachine : MonoBehaviour
 
 		Play();
 
-		SetState(_monoStates[0]);
+		SetState(_firstState);
 
 		_initialized = true;
 	}
@@ -138,22 +139,22 @@ public abstract class MonoStateMachine : MonoBehaviour
 		InitOnFirstFixedUpdate = 4,
 		InitManually = 5
 	}
+}
 
-	class EmptyCollectionException : SystemException
+class EmptyCollectionException : SystemException
+{
+	public EmptyCollectionException() : base("Collection is empty.")
 	{
-		public EmptyCollectionException() : base("Collection is empty.")
-		{
 
-		}
+	}
 
-		public EmptyCollectionException(string message) : base(message)
-		{
+	public EmptyCollectionException(string message) : base(message)
+	{
 
-		}
+	}
 
-		public EmptyCollectionException(string message, Exception inner) : base(message, inner)
-		{
+	public EmptyCollectionException(string message, Exception inner) : base(message, inner)
+	{
 
-		}
 	}
 }

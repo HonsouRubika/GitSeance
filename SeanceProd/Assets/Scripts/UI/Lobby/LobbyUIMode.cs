@@ -17,6 +17,8 @@ namespace Seance.UI.Lobby
         LobbyManager _lobby;
 
         [SerializeField] GameObject _startGameButton;
+        [SerializeField] GameObject _createLobbyButton;
+        [SerializeField] GameObject _joinLobbyButton;
         [SerializeField] TextMeshProUGUI _playerCountText;
 
         bool _isHost = false;
@@ -34,12 +36,18 @@ namespace Seance.UI.Lobby
         {
             _isHost = true;
             _connector.CreateLobby();
-        }
+
+            _createLobbyButton.SetActive(false);
+            _joinLobbyButton.SetActive(false);
+		}
 
         public void JoinLobbyButton()
         {
             _connector.JoinLobby("localhost");
-        }
+
+			_createLobbyButton.SetActive(false);
+			_joinLobbyButton.SetActive(false);
+		}
 
         public void StartGameButton()
         {

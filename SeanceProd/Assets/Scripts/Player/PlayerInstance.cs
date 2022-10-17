@@ -1,3 +1,6 @@
+/// Author: Nicolas Capelier
+/// Last modified by: Nicolas Capelier
+
 using FishNet.Object;
 using Seance.Level;
 using Seance.Networking;
@@ -83,6 +86,8 @@ namespace Seance.Player
 			_lobby._playerInstances[positionIndex].transform.rotation = _levelReferences._rightPlayerTransform.rotation;
 
 			_camera.SetActive(true);
+
+			_lobby.ServerAddPlayerReady();
 		}
 
 		#endregion
