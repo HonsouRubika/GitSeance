@@ -4,6 +4,7 @@ using Seance.Player;
 using System.Collections.Generic;
 using UnityEngine;
 using System;
+using System.Linq;
 
 namespace Seance.Networking
 {
@@ -12,7 +13,7 @@ namespace Seance.Networking
         //Server only, used temporarily to track connected clients before game start
         List<NetworkConnection> _serverConnections = new();
 
-        //List of all connected clients, setup when the game starts
+        //List of all connected clients
         [HideInInspector] public List<NetworkConnection> _connections = new();
 
         //Self position in _connections list
@@ -21,14 +22,31 @@ namespace Seance.Networking
         //Owned network connection of this client
         [HideInInspector] public NetworkConnection _ownedConnection;
 
+        //List if all player instances, setup when the game starts
+        [HideInInspector] public List<PlayerInstance> _playerInstances = new();
+
         //Owned PlayerInstance object of this client
         [HideInInspector] public PlayerInstance _ownedPlayerInstance;
 
         //Current number of connected clients
         [HideInInspector] public int _connectionCount = 0;
 
+        //Called every time the connection count changes
+        public static Action<int> OnConnectionCountChange;
+
         //Called right before the game starts, used to set all server related variables on clients
         public static Action OnClientSetup;
+
+        #region Singleton
+
+        public static LobbyManager Instance;
+
+        private void Awake()
+        {
+            Instance = this;
+        }
+
+        #endregion
 
         #region Lobby Creation
 
@@ -51,6 +69,14 @@ namespace Seance.Networking
             }
         }
 
+        public void AddPlayerInstance(PlayerInstance instance)
+        {
+            _playerInstances.Add(instance);
+
+            if (_playerInstances.Count == 3)
+                _playerInstances.OrderBy(index => index.LocalConnection.ClientId);
+        }
+
         [ServerRpc(RequireOwnership = false)]
         public void ServerRemoveConnection(NetworkConnection conn)
         {
@@ -68,6 +94,7 @@ namespace Seance.Networking
         public void ObserversUpdatePlayerCount(int count)
         {
             _connectionCount = count;
+            OnConnectionCountChange?.Invoke(_connectionCount);
         }
 
         [ObserversRpc]

@@ -13,7 +13,18 @@ namespace Seance.Networking
 		[Header("Params")]
 		[SerializeField] ushort _serverPort;
 
-        private void Update()
+		#region Singleton
+
+		public static PlayerConnector Instance;
+
+		private void Awake()
+		{
+			Instance = this;
+		}
+
+		#endregion
+
+		private void Update()
         {
 			if(Input.GetKeyDown(KeyCode.C))
             {

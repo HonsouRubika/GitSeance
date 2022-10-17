@@ -1,50 +1,87 @@
 using FishNet.Object;
+using Seance.Level;
 using Seance.Networking;
+using UnityEngine;
 
 namespace Seance.Player
 {
-    public class PlayerInstance : NetworkBehaviour
-    {
-        LobbyManager _lobbyManager;
+	public class PlayerInstance : NetworkBehaviour
+	{
+		LobbyManager _lobby;
+		LevelReferences _levelReferences;
 
-        #region Connection to server
+		[Header("References")]
+		[SerializeField] GameObject _camera;
 
-        public override void OnStartClient()
-        {
-            base.OnStartClient();
+		#region Connection to server
 
-            if (!IsOwner)
-                return;
+		public override void OnStartClient()
+		{
+			base.OnStartClient();
 
-            _lobbyManager = FindObjectOfType<LobbyManager>();
-            LobbyManager.OnClientSetup += SetupClient;
-            _lobbyManager._ownedConnection = LocalConnection;
-            _lobbyManager._ownedPlayerInstance = this;
-            _lobbyManager.ServerAddConnection(LocalConnection);
-        }
+			_lobby = LobbyManager.Instance;
+			_levelReferences = LevelReferences.Instance;
 
-        public override void OnStopClient()
-        {
-            base.OnStopClient();
+			_lobby.AddPlayerInstance(this);
 
-            if (!IsOwner)
-                return;
+			if (!IsOwner)
+				return;
 
-            _lobbyManager.ServerRemoveConnection(LocalConnection);
-        }
+			LobbyManager.OnClientSetup += SetupClient;
+			_lobby._ownedConnection = LocalConnection;
+			_lobby._ownedPlayerInstance = this;
+			_lobby.ServerAddConnection(LocalConnection);
+		}
 
-        void SetupClient()
-        {
-            for (int i = 0; i < _lobbyManager._connections.Count; i++)
-            {
-                if (_lobbyManager._connections[i].ClientId == _lobbyManager._ownedConnection.ClientId)
-                {
-                    _lobbyManager._ownedConnectionReferencePosition = i;
-                    break;
-                }
-            }
-        }
+		public override void OnStopClient()
+		{
+			base.OnStopClient();
 
-        #endregion
-    }
+			if (!IsOwner)
+				return;
+
+			_lobby.ServerRemoveConnection(LocalConnection);
+		}
+
+		void SetupClient()
+		{
+			if (!IsOwner)
+			{
+				Destroy(_camera.gameObject);
+				return;
+			}
+
+			for (int i = 0; i < _lobby._connections.Count; i++)
+			{
+				if (_lobby._connections[i].ClientId == _lobby._ownedConnection.ClientId)
+				{
+					_lobby._ownedConnectionReferencePosition = i;
+					break;
+				}
+			}
+
+			int positionIndex = _lobby._ownedConnectionReferencePosition;
+
+			transform.position = _levelReferences._activePlayerTransform.position;
+			transform.rotation = _levelReferences._activePlayerTransform.rotation;
+
+			positionIndex++;
+			if (positionIndex > 2)
+				positionIndex = 0;
+
+			_lobby._playerInstances[positionIndex].transform.position = _levelReferences._leftPlayerTransform.position;
+			_lobby._playerInstances[positionIndex].transform.rotation = _levelReferences._leftPlayerTransform.rotation;
+
+			positionIndex++;
+			if (positionIndex > 2)
+				positionIndex = 0;
+
+			_lobby._playerInstances[positionIndex].transform.position = _levelReferences._rightPlayerTransform.position;
+			_lobby._playerInstances[positionIndex].transform.rotation = _levelReferences._rightPlayerTransform.rotation;
+
+			_camera.SetActive(true);
+		}
+
+		#endregion
+	}
 }
