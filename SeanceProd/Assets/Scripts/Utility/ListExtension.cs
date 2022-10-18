@@ -8,6 +8,14 @@ namespace Seance.Utility
 {
     public static class ListExtension
     {
+        public static T PickRandom<T>(this List<T> list)
+        {
+            if(list == null || list.Count == 0)
+                throw new System.IndexOutOfRangeException();
+
+            return list[Random.Range(0, list.Count - 1)];
+        }
+
         public static List<T> FisherYates<T>(this List<T> list)
         {
             int random;

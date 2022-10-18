@@ -60,11 +60,6 @@ public abstract class MonoStateMachine : MonoBehaviour
 		if (_monoStates.Length == 0)
 			throw new EmptyCollectionException("No MonoState found for this MonoStateMachine.");
 
-		foreach(MonoState monoState in _monoStates)
-		{
-			monoState.Init(this);
-		}
-
 		Play();
 
 		SetState(_firstState);

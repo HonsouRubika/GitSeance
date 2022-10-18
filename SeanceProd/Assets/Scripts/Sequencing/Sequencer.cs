@@ -18,7 +18,6 @@ namespace Seance.Utility
 
 		int _index = -1;
 
-		bool _active;
 		bool _paused;
 		bool _finished = true;
 		bool _subscribed;
@@ -27,14 +26,19 @@ namespace Seance.Utility
 
 		#region public Methods
 
-		public Sequencer Append(float duration, Action action)
+		public Sequencer Append(float duration, Action startAction)
 		{
-			return Append(duration, null, action);
+			return Append(duration, null, startAction);
 		}
 
-		public Sequencer Append(float duration, Action action, Action animationAction)
+		public Sequencer Append(float duration)
 		{
-			_events.Add(new TimedEvent(duration, action, animationAction));
+			return Append(duration, null, null);
+		}
+
+		public Sequencer Append(float duration, Action startAction, Action endAction)
+		{
+			_events.Add(new TimedEvent(duration, startAction, endAction));
 			return this;
 		}
 

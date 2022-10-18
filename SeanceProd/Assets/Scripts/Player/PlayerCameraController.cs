@@ -98,13 +98,4 @@ namespace Seance.Player
             _animator.Play(_positions[_currentPosition.x, _currentPosition.y]);
 		}
 	}
-
-    public enum CameraTarget
-    {
-        Hand = 0,
-        Board = 1,
-        Wayfarer = 2,
-        Left = 3,
-        Right = 4
-    }
 }
