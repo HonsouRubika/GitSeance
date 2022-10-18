@@ -581,8 +581,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _defaultCamera: {fileID: 1058992571}
   _startGameButton: {fileID: 640752280}
-  _createLobbyButton: {fileID: 0}
-  _joinLobbyButton: {fileID: 0}
+  _createLobbyButton: {fileID: 1172264672}
+  _joinLobbyButton: {fileID: 1250541792}
   _playerCountText: {fileID: 545477247}
 --- !u!1 &545477245
 GameObject:
@@ -1853,6 +1853,8 @@ GameObject:
   m_Component:
   - component: {fileID: 1607681934}
   - component: {fileID: 1607681937}
+  - component: {fileID: 1607681939}
+  - component: {fileID: 1607681938}
   - component: {fileID: 1607681936}
   - component: {fileID: 1607681935}
   m_Layer: 0
@@ -1916,7 +1918,37 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _initMode: 5
-  _firstState: {fileID: 1607681936}
+  _firstState: {fileID: 1607681939}
+  _startingDecks:
+  - {fileID: 11400000, guid: 8856f8f9ca7909f4dbe69074ba0b59df, type: 2}
+  - {fileID: 11400000, guid: 7e440c08610ce6e4c99b698cabacf33f, type: 2}
+  - {fileID: 11400000, guid: a57b899f07aef9a42968b80752e2ace2, type: 2}
+--- !u!114 &1607681938
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1607681933}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d48013db045025c41a754f852e11a94b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _stateName: EndChapter
+--- !u!114 &1607681939
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1607681933}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f1f725f5ca666b24f947528f35b07061, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _stateName: NewChapter
 --- !u!1 &1672870555
 GameObject:
   m_ObjectHideFlags: 0

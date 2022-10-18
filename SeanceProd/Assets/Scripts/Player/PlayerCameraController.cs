@@ -12,16 +12,28 @@ namespace Seance.Player
         [SerializeField] Animator _animator;
 
         [Header("Params")]
-        [SerializeField] CameraTarget _startTarget;
-        [HideInInspector] public CameraTarget _currentTarget;
-        [SerializeField] float _cameraMovementCooldown = .3f;
+        [SerializeField] Vector2Int _startPosition;
+        [HideInInspector] public Vector2Int _currentPosition = new Vector2Int(-1, -1);
+        [HideInInspector] public string[,] _positions = new string[3,3];
+
+        [SerializeField] float _cameraMovementCooldown = .15f;
 
         CountdownTimer _cameraMovementTimer = new CountdownTimer();
         bool _canMoveCamera = true;
 
         private void Start()
         {
-            SwitchCameraPosition(_startTarget);
+            _positions[0, 0] = "BottomLeft";
+            _positions[1, 0] = "Hand";
+            _positions[2, 0] = "BottomRight";
+
+            _positions[0, 1] = "Left";
+            _positions[1, 1] = "Board";
+            _positions[2, 1] = "Right";
+
+            _positions[1, 2] = "Wayfarer";
+
+			SwitchCameraPosition(_startPosition);
         }
 
         void SetInputCooldown()
@@ -37,84 +49,55 @@ namespace Seance.Player
 
             Vector2 input = context.ReadValue<Vector2>();
 
-            if (input.x == -1f)
+            Vector2Int current = _currentPosition;
+
+            if (input.x == 1f && _currentPosition.x < 2)
             {
-                SetInputCooldown();
-                SwitchCameraPosition(CameraTarget.Left);
-                return;
+                current.x++;
+
+                if (current.x == 2 && current.y == 2)
+                    current.y = 1;
+
+                SwitchCameraPosition(current);
             }
-
-            if (input.x == 1f)
+            else if(input.x == -1f && _currentPosition.x > 0)
             {
-                SetInputCooldown();
-                SwitchCameraPosition(CameraTarget.Right);
-                return;
+				current.x--;
+
+				if (current.x == 0 && current.y == 2)
+					current.y = 1;
+
+				SwitchCameraPosition(current);
 			}
-
-            int current = (int)_currentTarget;
-
-            if(current < 2 && input.y == 1f)
+            else if(input.y == 1f && _currentPosition.y < 2)
             {
-                current++;
-                SetInputCooldown();
-                SwitchCameraPositionWithIndex(current);
-                return;
-			}
-            if(current > 0 && input.y == -1f)
+                current.y++;
+
+                if (current.y == 2)
+                    current.x = 1;
+
+                SwitchCameraPosition(current);
+            }
+            else if(input.y == -1f && _currentPosition.y > 0)
             {
-                current--;
-                SetInputCooldown();
-                SwitchCameraPositionWithIndex(current);
-                return;
+				current.y--;
+
+				SwitchCameraPosition(current);
 			}
 
         }
 
-        void SwitchCameraPositionWithIndex(int index)
+        void SwitchCameraPosition(Vector2Int newPosition)
         {
-            switch (index)
-            {
-                case 0:
-                    SwitchCameraPosition(CameraTarget.Hand);
-					break;
-				case 1:
-					SwitchCameraPosition(CameraTarget.Board);
-					break;
-				case 2:
-					SwitchCameraPosition(CameraTarget.Wayfarer);
-					break;
-				default:
-                    break;
-            }
-        }
+            if (newPosition == _currentPosition)
+                return;
 
-        void SwitchCameraPosition(CameraTarget target)
-        {
-            _currentTarget = target;
-            Debug.Log(_currentTarget);
+			SetInputCooldown();
 
-            switch (_currentTarget)
-            {
-                case CameraTarget.Hand:
-                    _animator.Play("Hand");
-                    break;
-                case CameraTarget.Board:
-					_animator.Play("Board");
-					break;
-                case CameraTarget.Wayfarer:
-					_animator.Play("Wayfarer");
-					break;
-                case CameraTarget.Left:
-					_animator.Play("Left");
-					break;
-                case CameraTarget.Right:
-					_animator.Play("Right");
-					break;
-                default:
-                    break;
-            }
-        }
-    }
+            _currentPosition = newPosition;
+            _animator.Play(_positions[_currentPosition.x, _currentPosition.y]);
+		}
+	}
 
     public enum CameraTarget
     {

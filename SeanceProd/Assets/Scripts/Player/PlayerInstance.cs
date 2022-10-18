@@ -6,6 +6,9 @@ using Seance.Level;
 using Seance.Networking;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using Seance.CardSystem;
+using Seance.TurnSystem;
+using System.Collections.Generic;
 
 namespace Seance.Player
 {
@@ -17,6 +20,8 @@ namespace Seance.Player
 		[Header("References")]
 		[SerializeField] GameObject _camera;
 		[SerializeField] PlayerInput _input;
+		[Space]
+		[SerializeField] PlayerCardZones _zones; 
 
 		#region Connection to server
 
@@ -57,6 +62,8 @@ namespace Seance.Player
 				return;
 			}
 
+			//Find and set OwnedConnectionReferencePosition
+
 			for (int i = 0; i < _lobby._connections.Count; i++)
 			{
 				if (_lobby._connections[i].ClientId == _lobby._ownedConnection.ClientId)
@@ -65,6 +72,8 @@ namespace Seance.Player
 					break;
 				}
 			}
+
+			//Set position of players
 
 			int positionIndex = _lobby._ownedConnectionReferencePosition;
 
@@ -84,6 +93,12 @@ namespace Seance.Player
 
 			_lobby._playerInstances[positionIndex].transform.position = _levelReferences._rightPlayerTransform.position;
 			_lobby._playerInstances[positionIndex].transform.rotation = _levelReferences._rightPlayerTransform.rotation;
+
+			//Set starting deck for this player
+
+			_zones.Init(TurnStateMachine.Instance._startingDecks[_lobby._ownedConnectionReferencePosition]._cards);
+
+			//Enable camera and set state to 'ready'
 
 			_camera.SetActive(true);
 
