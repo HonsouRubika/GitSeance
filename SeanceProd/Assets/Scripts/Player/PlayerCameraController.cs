@@ -10,6 +10,8 @@ namespace Seance.Player
     {
         [Header("References")]
         [SerializeField] Animator _animator;
+        [SerializeField] Camera _camera;
+        public Camera Camera { get { return _camera; } }
 
         [Header("Params")]
         [SerializeField] Vector2Int _startPosition;

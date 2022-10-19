@@ -8,6 +8,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using System;
 using System.Linq;
+using Seance.TurnSystem;
 
 namespace Seance.Networking
 {
@@ -130,6 +131,7 @@ namespace Seance.Networking
 		[ObserversRpc]
 		void ObserversStartGame()
 		{
+			TurnStateMachine.Instance.Init();
 			//Init state machine
 		}
 

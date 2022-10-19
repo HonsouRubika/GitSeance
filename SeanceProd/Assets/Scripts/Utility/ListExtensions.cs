@@ -6,7 +6,7 @@ using UnityEngine;
 
 namespace Seance.Utility
 {
-    public static class ListExtension
+    public static class ListExtensions
     {
         public static T PickRandom<T>(this List<T> list)
         {

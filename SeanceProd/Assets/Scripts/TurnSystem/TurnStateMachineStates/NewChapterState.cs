@@ -21,19 +21,26 @@ namespace Seance.TurnSystem
 
         public override void OnStateEnter()
         {
-            if (!_machine._gameStarted)
-                _machine._currentChapter = _machine._gameStartChapterCards.PickRandom();
-            else
-                _machine._currentChapter = _machine._chapterCards.PickRandom();
+            /// ==> Play game begin events
 
-            _machine.SetChapterTurnOrder(Random.Range(0, 3));
-            _machine.StartPlayerTurn(0);
+            if (!_machine.IsServer)
+                return;
 
-            _sequencer.Append(2f);
-            _sequencer.Append(2f, () => _machine._currentChapter.ApplyChapterBeginEffects());
-            _sequencer.Append(2f, () => _machine.StartPlayerTurn(0));
+            _machine.ServerPlayNextTurn();
 
-            _sequencer.Play();
+            //if (!_machine._gameStarted)
+            //    _machine._currentChapter = _machine._gameStartChapterCards.PickRandom();
+            //else
+            //    _machine._currentChapter = _machine._chapterCards.PickRandom();
+
+            ////_machine.SetChapterTurnOrder(Random.Range(0, 3));
+            ////_machine.StartPlayerTurn(0);
+
+            //_sequencer.Append(2f);
+            //_sequencer.Append(2f, () => _machine._currentChapter.ApplyChapterBeginEffects());
+            ////_sequencer.Append(2f, () => _machine.StartPlayerTurn(0));
+
+            //_sequencer.Play();
         }
     }
 }

@@ -18,7 +18,12 @@ namespace Seance.Player
 		LevelReferences _levelReferences;
 
 		[Header("References")]
-		[SerializeField] GameObject _camera;
+		[SerializeField] GameObject _cameraParent;
+		[SerializeField] PlayerInputManager _inputManager;
+		public PlayerInputManager InputManager { get { return _inputManager; } }
+		public GameObject CameraParent { get { return _cameraParent; } }
+		[SerializeField] PlayerCameraController _cameraController;
+		public PlayerCameraController CameraController { get { return _cameraController; } }
 		[SerializeField] PlayerInput _input;
 		[Space]
 		[SerializeField] PlayerCardZones _zones; 
@@ -57,7 +62,7 @@ namespace Seance.Player
 		{
 			if (!IsOwner)
 			{
-				Destroy(_camera.gameObject);
+				Destroy(_cameraParent.gameObject);
 				Destroy(_input);
 				return;
 			}
@@ -100,7 +105,7 @@ namespace Seance.Player
 
 			//Enable camera and set state to 'ready'
 
-			_camera.SetActive(true);
+			_cameraParent.SetActive(true);
 
 			_lobby.ServerAddPlayerReady();
 		}

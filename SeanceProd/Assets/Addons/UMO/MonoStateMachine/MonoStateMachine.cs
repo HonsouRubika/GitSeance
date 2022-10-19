@@ -2,14 +2,16 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using System;
+using FishNet;
+using FishNet.Object;
 
-public abstract class MonoStateMachine : MonoBehaviour
+public abstract class MonoStateMachine : NetworkBehaviour
 {
 	[SerializeField] InitMode _initMode = InitMode.InitOnAwake;
 	[SerializeField] MonoState _firstState;
 
 	bool _initialized = false;
-	bool _isPlaying = false;
+	bool _isActive = false;
 
 	MonoState[] _monoStates;
 	MonoState _activeState;
@@ -50,6 +52,7 @@ public abstract class MonoStateMachine : MonoBehaviour
 		}
 	}
 
+	[ObserversRpc]
 	public void Init()
 	{
 		if (_initialized)
@@ -69,12 +72,12 @@ public abstract class MonoStateMachine : MonoBehaviour
 
 	public void Play()
 	{
-		_isPlaying = true;
+		_isActive = true;
 	}
 
 	public void Pause()
 	{
-		_isPlaying = false;
+		_isActive = false;
 	}
 
 	private void Awake()
@@ -88,7 +91,7 @@ public abstract class MonoStateMachine : MonoBehaviour
 		if (_initMode == InitMode.InitOnStart)
 			Init();
 
-		if (!_isPlaying || !_initialized)
+		if (!_isActive || !_initialized)
 			return;
 	}
 
@@ -97,7 +100,7 @@ public abstract class MonoStateMachine : MonoBehaviour
 		if (_initMode == InitMode.InitOnFirstUpdate)
 			Init();
 
-		if (!_isPlaying || !_initialized)
+		if (!_isActive || !_initialized)
 			return;
 
 		_activeState.OnStateUpdate();
@@ -108,7 +111,7 @@ public abstract class MonoStateMachine : MonoBehaviour
 		if (_initMode == InitMode.InitOnFirstLateUpdate)
 			Init();
 
-		if (!_isPlaying || !_initialized)
+		if (!_isActive || !_initialized)
 			return;
 
 		_activeState.OnStateLateUpdate();
@@ -119,7 +122,7 @@ public abstract class MonoStateMachine : MonoBehaviour
 		if (_initMode == InitMode.InitOnFirstFixedUpdate)
 			Init();
 
-		if (!_isPlaying || !_initialized)
+		if (!_isActive || !_initialized)
 			return;
 
 		_activeState.OnStateFixedUpdate();
