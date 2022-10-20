@@ -43,18 +43,18 @@ public class DialogManager : MonoBehaviour
 
         //test
 
-        float totalTime = CalculateTimeToReadFile(Application.dataPath + "/Data/dialogTest.txt");
-        Debug.Log("total amount of time to read file = " + totalTime);
+        //float totalTime = CalculateTimeToReadFile(Application.dataPath + "/Data/dialogTest.txt");
+        //Debug.Log("total amount of time to read file = " + totalTime);
 
-        try
-        {
-            //StartDialogFromFile(Application.dataPath + "/Data/dialogTest.txt");
-        }
-        catch (Exception e)
-        {
-            Debug.LogError("Cand find file at given PATH");
-            Debug.LogError(e);
-        }
+        //try
+        //{
+        //    //StartDialogFromFile(Application.dataPath + "/Dialog/dialogTest.txt");
+        //}
+        //catch (Exception e)
+        //{
+        //    Debug.LogError("Cand find file at given PATH");
+        //    Debug.LogError(e);
+        //}
     }
 
     private void Update()
@@ -93,10 +93,14 @@ public class DialogManager : MonoBehaviour
 
     public void StartDialogFromFile(string filePath)
     {
+        Debug.Log("Starting dialog");
+
         if (_isActive)
             return;
         else
         {
+            filePath = Application.dataPath + filePath;
+
             //reset initial var
             _timeBetweenSentences = 3f;
 
@@ -188,7 +192,9 @@ public class DialogManager : MonoBehaviour
 
     public float CalculateTimeToReadFile(string filePath)
     {
-        StreamReader tmpStream = new StreamReader(filePath);
+		filePath = Application.dataPath + filePath;
+
+		StreamReader tmpStream = new StreamReader(filePath);
         float totalTime = 0;
 
         while (!tmpStream.EndOfStream)

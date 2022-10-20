@@ -28,7 +28,7 @@ namespace Seance.Utility
 
 		public Sequencer Append(float duration, Action startAction)
 		{
-			return Append(duration, null, startAction);
+			return Append(duration, startAction, null);
 		}
 
 		public Sequencer Append(float duration)
@@ -111,7 +111,6 @@ namespace Seance.Utility
 
 		void Tick()
 		{
-			Debug.LogWarning(_index);
 			if (_paused || _finished)
 				return;
 

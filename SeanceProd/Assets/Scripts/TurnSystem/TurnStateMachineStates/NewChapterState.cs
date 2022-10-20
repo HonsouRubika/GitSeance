@@ -26,7 +26,10 @@ namespace Seance.TurnSystem
             if (!_machine.IsServer)
                 return;
 
-            _machine.ServerPlayNextTurn();
+            _sequencer.Append(DialogManager.Instance.CalculateTimeToReadFile("/Dialogs/dialogTest.txt"), () => DialogManager.Instance.StartDialogFromFile("/Dialogs/dialogTest.txt"));
+            _sequencer.Append(1f, () => _machine.ServerPlayNextTurn());
+
+            _sequencer.Play();
 
             //if (!_machine._gameStarted)
             //    _machine._currentChapter = _machine._gameStartChapterCards.PickRandom();
