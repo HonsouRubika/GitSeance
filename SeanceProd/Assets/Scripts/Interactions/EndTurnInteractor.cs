@@ -12,7 +12,6 @@ namespace Seance.Interactions
     {
         public override void Interact(PlayerTurnState turn)
         {
-            Debug.LogError("End Turn");
             turn.EndTurn();
         }
     }

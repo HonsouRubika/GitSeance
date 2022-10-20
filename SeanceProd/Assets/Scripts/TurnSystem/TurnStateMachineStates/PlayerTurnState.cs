@@ -33,17 +33,18 @@ namespace Seance.TurnSystem
 
         public void OnClick(InputAction.CallbackContext context)
         {
+            if (!context.started)
+                return;
+
             RaycastHit hit;
 
             Ray ray = _lobby._ownedPlayerInstance.CameraController.Camera.ScreenPointToRay(Input.mousePosition);
-            Debug.LogError(Input.mousePosition);
 
             Debug.DrawRay(ray.origin, ray.direction * 50f, Color.red, .8f);
 
             if(Physics.Raycast(ray, out hit, 50f, _interactableLayer))
             {
                 Interactor interactor;
-
                 if(hit.transform.TryGetComponent(out interactor))
                 {
                     interactor.Interact(this);
@@ -57,7 +58,6 @@ namespace Seance.TurnSystem
                 return;
 
             _machine.ServerPlayNextTurn();
-            Debug.LogError("Ending Turn");
         }
     }
 }

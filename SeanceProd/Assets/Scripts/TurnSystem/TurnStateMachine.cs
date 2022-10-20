@@ -62,7 +62,7 @@ namespace Seance.TurnSystem
 		[ObserversRpc]
 		public void ObserversPlayNextTurn(int nextPlayer)
 		{
-			if(IsPlaying)
+			if (IsPlaying)
 			{
 				//Apply end of turn effects if needed
 			}
@@ -73,7 +73,7 @@ namespace Seance.TurnSystem
 			if (LobbyManager.Instance._ownedConnectionReferencePosition == _activePlayer)
 				_isPlaying = true;
 
-			SetState("PlayerTurn");
+			SetState("PlayerTurn", true);
 		}
 
 		/// Turn order system with random first player
