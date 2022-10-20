@@ -26,14 +26,14 @@ namespace Seance.Player
         private void Start()
         {
             _positions[0, 0] = "BottomLeft";
-            _positions[1, 0] = "Hand";
+            _positions[1, 0] = "PlayerSpace";
             _positions[2, 0] = "BottomRight";
 
             _positions[0, 1] = "Left";
-            _positions[1, 1] = "Board";
+            _positions[1, 1] = "Wayfarer";
             _positions[2, 1] = "Right";
 
-            _positions[1, 2] = "Wayfarer";
+            _positions[1, 2] = "Boardfocus";
 
 			SwitchCameraPosition(_startPosition);
         }

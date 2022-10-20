@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 1328707612565250167}
   - component: {fileID: 4220092946307485622}
   m_Layer: 0
-  m_Name: Board
+  m_Name: Wayfarer
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -24,15 +24,15 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 433095171596070815}
-  m_LocalRotation: {x: 0.23967418, y: -0, z: -0, w: 0.9708534}
-  m_LocalPosition: {x: 0, y: 1.615, z: 0.026}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0.2, z: 0.7}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1006895896470306765}
   m_Father: {fileID: 4158290704208751459}
   m_RootOrder: 1
-  m_LocalEulerAnglesHint: {x: 27.735, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &4220092946307485622
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -283,8 +283,8 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2154403249292291583}
-  m_LocalRotation: {x: 0.23967418, y: -0, z: -0, w: 0.9708534}
-  m_LocalPosition: {x: 0, y: 1.615, z: 0.026}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0.2, z: 0.7}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -395,7 +395,7 @@ MonoBehaviour:
   m_BlendUpdateMethod: 1
   m_DefaultBlend:
     m_Style: 1
-    m_Time: 2
+    m_Time: 1
     m_CustomCurve:
       serializedVersion: 2
       m_Curve: []
@@ -420,7 +420,7 @@ GameObject:
   - component: {fileID: 4250719075027037136}
   - component: {fileID: 2025894364303516924}
   m_Layer: 0
-  m_Name: Hand
+  m_Name: PlayerSpace
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -433,15 +433,15 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2477144392229520595}
-  m_LocalRotation: {x: 0.4349035, y: -0, z: -0, w: 0.9004771}
-  m_LocalPosition: {x: 0, y: 1.538, z: 0}
+  m_LocalRotation: {x: 0.5, y: 0, z: 0, w: 0.8660254}
+  m_LocalPosition: {x: 0, y: 0.2, z: 0.7}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 9147642192527105597}
   m_Father: {fileID: 4158290704208751459}
   m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 51.558, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 60, y: 0, z: 0}
 --- !u!114 &2025894364303516924
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -491,7 +491,7 @@ GameObject:
   - component: {fileID: 1779567453610940153}
   - component: {fileID: 5159153244932947794}
   m_Layer: 0
-  m_Name: Wayfarer
+  m_Name: Boardfocus
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -504,15 +504,15 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3231805999707704351}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 1.587, z: 0}
+  m_LocalRotation: {x: 0.45070705, y: -0, z: -0, w: 0.8926719}
+  m_LocalPosition: {x: 0, y: 0.3, z: 1.12}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 782412422547960661}
   m_Father: {fileID: 4158290704208751459}
   m_RootOrder: 2
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 53.578, y: 0, z: 0}
 --- !u!114 &5159153244932947794
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -619,15 +619,15 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4332065711788435339}
-  m_LocalRotation: {x: 0.14688762, y: -0.22523737, z: 0.03437166, w: 0.9625543}
-  m_LocalPosition: {x: 0, y: 1.526, z: 0}
+  m_LocalRotation: {x: 0.272532, y: -0.4030582, z: 0.12708373, w: 0.86436117}
+  m_LocalPosition: {x: 0, y: 0.2, z: 0.7}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1426534772419505555}
   m_Father: {fileID: 4158290704208751459}
   m_RootOrder: 5
-  m_LocalEulerAnglesHint: {x: 17.353, y: -26.34, z: 0}
+  m_LocalEulerAnglesHint: {x: 35, y: -50, z: 0}
 --- !u!114 &285215375151744725
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -737,15 +737,15 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5099658965082868112}
-  m_LocalRotation: {x: 0.14698899, y: 0.22237669, z: -0.03393508, w: 0.9632192}
-  m_LocalPosition: {x: 0, y: 1.507, z: 0}
+  m_LocalRotation: {x: 0.272532, y: 0.4030582, z: -0.12708373, w: 0.86436117}
+  m_LocalPosition: {x: 0, y: 0.2, z: 0.7}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 5459340260364604400}
   m_Father: {fileID: 4158290704208751459}
   m_RootOrder: 6
-  m_LocalEulerAnglesHint: {x: 17.353, y: 26, z: 0}
+  m_LocalEulerAnglesHint: {x: 35, y: 50, z: 0}
 --- !u!114 &8440208243908577683
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -874,6 +874,7 @@ MonoBehaviour:
   _cameraController: {fileID: 1554753953917652432}
   _input: {fileID: 8293160538889714536}
   _zones: {fileID: 6916631911980476716}
+  _worldPositionIndex: 0
 --- !u!114 &6916631911980476716
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1124,15 +1125,15 @@ MonoBehaviour:
   - {fileID: 285215375151744725}
   - {fileID: 8440208243908577683}
   m_Instructions:
-  - m_FullHash: -1372604445
+  - m_FullHash: 787940708
     m_VirtualCamera: {fileID: 2025894364303516924}
     m_ActivateAfter: 0
     m_MinDuration: 0
-  - m_FullHash: 484133825
+  - m_FullHash: -1257533773
     m_VirtualCamera: {fileID: 4220092946307485622}
     m_ActivateAfter: 0
     m_MinDuration: 0
-  - m_FullHash: -1257533773
+  - m_FullHash: -1660169422
     m_VirtualCamera: {fileID: 5159153244932947794}
     m_ActivateAfter: 0
     m_MinDuration: 0
@@ -1163,11 +1164,11 @@ MonoBehaviour:
       m_RotationOrder: 4
   m_CustomBlends: {fileID: 0}
   m_ParentHash:
-  - m_Hash: 484133825
-    m_ParentHash: 756556552
-  - m_Hash: -1372604445
-    m_ParentHash: 756556552
   - m_Hash: -1257533773
+    m_ParentHash: 756556552
+  - m_Hash: 787940708
+    m_ParentHash: 756556552
+  - m_Hash: -1660169422
     m_ParentHash: 756556552
   - m_Hash: -215346684
     m_ParentHash: 756556552
@@ -1354,7 +1355,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7814318516231501284}
   m_LocalRotation: {x: 0, y: 0.22495107, z: 0, w: 0.9743701}
-  m_LocalPosition: {x: 0, y: 1.507, z: 0}
+  m_LocalPosition: {x: 0, y: 0.2, z: 0.7}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -1468,15 +1469,15 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8599141983139037263}
-  m_LocalRotation: {x: -0, y: -0.22784486, z: -0, w: 0.9736975}
-  m_LocalPosition: {x: 0, y: 1.526, z: 0}
+  m_LocalRotation: {x: 0, y: -0.22495107, z: 0, w: 0.9743701}
+  m_LocalPosition: {x: 0, y: 0.2, z: 0.7}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 3380759869826261795}
   m_Father: {fileID: 4158290704208751459}
   m_RootOrder: 3
-  m_LocalEulerAnglesHint: {x: 0, y: -26.34, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: -26, z: 0}
 --- !u!114 &177045213312328023
 MonoBehaviour:
   m_ObjectHideFlags: 0
