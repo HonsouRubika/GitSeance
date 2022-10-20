@@ -45,6 +45,7 @@ namespace Seance.TurnSystem
             if(Physics.Raycast(ray, out hit, 50f, _interactableLayer))
             {
                 Interactor interactor;
+
                 if(hit.transform.TryGetComponent(out interactor))
                 {
                     interactor.Interact(this);

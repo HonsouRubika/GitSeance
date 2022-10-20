@@ -11,7 +11,7 @@ namespace Seance.Level
     public class LevelReferences : MonoBehaviour
     {
         [Header("References")]
-        public Transform _activePlayerTransform, _leftPlayerTransform, _rightPlayerTransform;
+		public Transform[] _playersTransform;
 
 		#region Singleton
 

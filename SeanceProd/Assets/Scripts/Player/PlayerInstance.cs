@@ -26,7 +26,8 @@ namespace Seance.Player
 		public PlayerCameraController CameraController { get { return _cameraController; } }
 		[SerializeField] PlayerInput _input;
 		[Space]
-		[SerializeField] PlayerCardZones _zones; 
+		[SerializeField] PlayerCardZones _zones;
+		[HideInInspector] public int _worldPositionIndex;
 
 		#region Connection to server
 
@@ -82,22 +83,33 @@ namespace Seance.Player
 
 			int positionIndex = _lobby._ownedConnectionReferencePosition;
 
-			transform.position = _levelReferences._activePlayerTransform.position;
-			transform.rotation = _levelReferences._activePlayerTransform.rotation;
+			for (int i = 0; i < 3; i++)
+			{
+				_lobby._playerInstances[positionIndex].transform.position = _levelReferences._playersTransform[i].position;
+				_lobby._playerInstances[positionIndex].transform.rotation = _levelReferences._playersTransform[i].rotation;
+				_lobby._playerInstances[positionIndex]._worldPositionIndex = i;
 
-			positionIndex++;
-			if (positionIndex > 2)
-				positionIndex = 0;
+				positionIndex++;
+				if (positionIndex > 2)
+					positionIndex = 0;
+			}
 
-			_lobby._playerInstances[positionIndex].transform.position = _levelReferences._leftPlayerTransform.position;
-			_lobby._playerInstances[positionIndex].transform.rotation = _levelReferences._leftPlayerTransform.rotation;
+			//transform.position = _levelReferences._activePlayerTransform.position;
+			//transform.rotation = _levelReferences._activePlayerTransform.rotation;
 
-			positionIndex++;
-			if (positionIndex > 2)
-				positionIndex = 0;
+			//positionIndex++;
+			//if (positionIndex > 2)
+			//	positionIndex = 0;
 
-			_lobby._playerInstances[positionIndex].transform.position = _levelReferences._rightPlayerTransform.position;
-			_lobby._playerInstances[positionIndex].transform.rotation = _levelReferences._rightPlayerTransform.rotation;
+			//_lobby._playerInstances[positionIndex].transform.position = _levelReferences._leftPlayerTransform.position;
+			//_lobby._playerInstances[positionIndex].transform.rotation = _levelReferences._leftPlayerTransform.rotation;
+
+			//positionIndex++;
+			//if (positionIndex > 2)
+			//	positionIndex = 0;
+
+			//_lobby._playerInstances[positionIndex].transform.position = _levelReferences._rightPlayerTransform.position;
+			//_lobby._playerInstances[positionIndex].transform.rotation = _levelReferences._rightPlayerTransform.rotation;
 
 			//Set starting deck for this player
 

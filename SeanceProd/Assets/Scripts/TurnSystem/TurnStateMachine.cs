@@ -8,6 +8,7 @@ using Seance.Player;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Seance.Wayfarer;
 
 namespace Seance.TurnSystem
 {
@@ -72,6 +73,8 @@ namespace Seance.TurnSystem
 
 			if (LobbyManager.Instance._ownedConnectionReferencePosition == _activePlayer)
 				_isPlaying = true;
+
+			WayfarerManager.Instance.MoveToPosition(nextPlayer);
 
 			SetState("PlayerTurn", true);
 		}
