@@ -1,5 +1,5 @@
 /// Author: Nicolas Capelier
-/// Last modified by: Nicolas Capelier
+/// Last modified by: Julien Haigron
 
 using Seance.Interactions;
 using Seance.Networking;
@@ -58,6 +58,18 @@ namespace Seance.TurnSystem
                 return;
 
             _machine.ServerPlayNextTurn();
+        }
+
+        public void PlayerCheated()
+        {
+            //player has cheated trigger
+            Debug.Log("player changed dice value");
+        }
+
+        public void PlayerKnocks()
+        {
+            //player get wayfarer focus
+            Debug.Log("player knocks");
         }
     }
 }
