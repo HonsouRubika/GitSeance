@@ -3,6 +3,7 @@
 
 using FishNet.Connection;
 using FishNet.Object;
+using Seance.Interactions;
 using Seance.Networking;
 using Seance.PostProcess;
 using Seance.TurnSystem;
@@ -20,7 +21,8 @@ namespace Seance.Wayfarer
 		[Header("References")]
 		[SerializeField] Transform _renderer;
 		[SerializeField] Transform[] _positions;
-		[SerializeField] AudioClip _punishClip;
+		[SerializeField] AudioClip[] _punishClips;
+		int _lastClip = -1;
 
 		LobbyManager _lobby;
 		PostProcessManager _postProcessManager;
@@ -80,10 +82,16 @@ namespace Seance.Wayfarer
 		[TargetRpc]
 		public void TargetPunishPlayer(NetworkConnection conn)
 		{
-			Debug.Log("Spotted");
+			Dice20.Instance.DecreaseDiceValue(2);
 			_postProcessManager.SetPostProcess(PostProcessType.Spotted);
-			//AudioManager.Instance.PlayMJVoice(_punishClip);
-			//DialogManager.Instance.StartDialogFromFile("Dialogs/PunishText.txt");
+			int clip = Random.Range(0, _punishClips.Length);
+			while (clip == _lastClip)
+			{
+				clip = Random.Range(0, _punishClips.Length);
+			}
+			_lastClip = clip;
+			AudioManager.Instance.PlayMJVoice(_punishClips[clip]);
+			DialogManager.Instance.PlaySingleLine("Dialogs/PunishText.txt", clip);
 		}
 	}
 }

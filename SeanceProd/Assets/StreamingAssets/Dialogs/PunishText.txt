@@ -1,0 +1,4 @@
+#time=3
+Je te déconseille de recommencer.
+#time=3
+Vraiment ? Ce petit jeu ne marche pas avec moi.

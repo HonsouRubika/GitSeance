@@ -23,9 +23,5 @@ public class TemporaryAudioSource : MonoBehaviour
         {
             DestroyImmediate(gameObject);
         }
-        else
-        {
-            Debug.Log("clip is currently playing");
-        }
     }
 }

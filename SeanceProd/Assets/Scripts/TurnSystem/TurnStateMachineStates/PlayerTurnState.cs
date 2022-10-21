@@ -12,92 +12,112 @@ using UnityEngine.InputSystem;
 
 namespace Seance.TurnSystem
 {
-    public class PlayerTurnState : MonoState
-    {
-        TurnStateMachine _machine;
-        LobbyManager _lobby;
-        WayfarerManager _wayfarer;
+	public class PlayerTurnState : MonoState
+	{
+		TurnStateMachine _machine;
+		LobbyManager _lobby;
+		WayfarerManager _wayfarer;
 
-        [Header("Params")]
-        [SerializeField] LayerMask _interactableLayer;
+		[Header("Params")]
+		[SerializeField] LayerMask _interactableLayer;
 
-        [Header("References")]
-        [SerializeField] AudioClip _diceClip;
-        [SerializeField] AudioClip _knocksClip;
+		[Header("References")]
+		[SerializeField] AudioClip[] _knocksClips;
+		int _lastKnockClip = -1;
+		[SerializeField] AudioClip _miTurnClip;
+		[SerializeField] AudioClip _fullTurnClip;
+		[SerializeField] GameObject _turnIndicatorUI;
 
-        CountdownTimer _miTurnTimer = new();
-        CountdownTimer _fullTurnTimer = new();
+		CountdownTimer _miTurnTimer = new();
+		CountdownTimer _fullTurnTimer = new();
 
 		private void Start()
-        {
-            _machine = TurnStateMachine.Instance;
-            _lobby = LobbyManager.Instance;
-            _wayfarer = WayfarerManager.Instance;
-        }
+		{
+			_machine = TurnStateMachine.Instance;
+			_lobby = LobbyManager.Instance;
+			_wayfarer = WayfarerManager.Instance;
+		}
 
-        public override void OnStateEnter()
-        {
-            if (!_machine.IsPlaying)
-                return;
+		public override void OnStateEnter()
+		{
+			if (!_machine.IsPlaying)
+			{
+				_turnIndicatorUI.SetActive(false);
+				return;
+			}
 
-            _miTurnTimer.SetTime(15f, DisplayMiTurnDialog);
-            _fullTurnTimer.SetTime(30f, DisplayFullTurnDialog);
-        }
+			_turnIndicatorUI.SetActive(true);
 
-        void DisplayMiTurnDialog()
-        {
-            //dialog mi turn
-        }
+			_miTurnTimer.SetTime(15f, DisplayMiTurnDialog);
+			_fullTurnTimer.SetTime(30f, DisplayFullTurnDialog);
+		}
 
-        void DisplayFullTurnDialog()
-        {
-            //Dialog full turn
-            EndTurn();
-        }
+		void DisplayMiTurnDialog()
+		{
+			AudioManager.Instance.PlayMJVoice(_miTurnClip);
+			DialogManager.Instance.StartDialogFromFile("Dialogs/MiTurnText.txt");
+		}
 
-        public void OnClick(InputAction.CallbackContext context)
-        {
-            if (!context.started)
-                return;
+		void DisplayFullTurnDialog()
+		{
+			AudioManager.Instance.PlayMJVoice(_fullTurnClip);
+			DialogManager.Instance.StartDialogFromFile("Dialogs/FullTurnText.txt");
+			EndTurn();
+		}
 
-            RaycastHit hit;
+		public void OnClick(InputAction.CallbackContext context)
+		{
+			if (!context.started)
+				return;
 
-            Ray ray = _lobby._ownedPlayerInstance.CameraController.Camera.ScreenPointToRay(Input.mousePosition);
+			RaycastHit hit;
 
-            Debug.DrawRay(ray.origin, ray.direction * 50f, Color.red, .8f);
+			Ray ray = _lobby._ownedPlayerInstance.CameraController.Camera.ScreenPointToRay(Input.mousePosition);
 
-            if(Physics.Raycast(ray, out hit, 50f, _interactableLayer))
-            {
-                Interactor interactor;
+			Debug.DrawRay(ray.origin, ray.direction * 50f, Color.red, .8f);
 
-                if(hit.transform.TryGetComponent(out interactor))
-                {
-                    interactor.Interact(this);
-                }
-            }
-        }
+			if (Physics.Raycast(ray, out hit, 50f, _interactableLayer))
+			{
+				Interactor interactor;
 
-        public void EndTurn()
-        {
-            if (!_machine.IsPlaying)
-                return;
-
-            _machine.ServerPlayNextTurn();
-        }
-
-        public void PlayerCheatedDice()
-        {
-            if(_wayfarer.CurrentTarget == _lobby._ownedConnectionReferencePosition)
-            {
-                _machine.ServerSetWayfarerTarget(_lobby._ownedConnectionReferencePosition, true);
-				//AudioManager.Instance.PlayEffect(_diceClip);
+				if (hit.transform.TryGetComponent(out interactor))
+				{
+					interactor.Interact(this);
+				}
 			}
 		}
 
-        public void PlayerKnocks()
-        {
-            _machine.ServerSetWayfarerTarget(_lobby._ownedConnectionReferencePosition, false);
-			//AudioManager.Instance.PlayMJVoice(_knocksClip);
+		public void EndTurn()
+		{
+			if (!_machine.IsPlaying)
+				return;
+
+			_miTurnTimer.Cancel();
+			_fullTurnTimer.Cancel();
+
+			_machine.ServerPlayNextTurn();
+		}
+
+		public void PlayerCheatedDice()
+		{
+			if (_wayfarer.CurrentTarget == _lobby._ownedConnectionReferencePosition)
+			{
+				_machine.ServerSetWayfarerTarget(_lobby._ownedConnectionReferencePosition, true);
+			}
+		}
+
+		public void PlayerKnocks()
+		{
+			int clip = Random.Range(0, _knocksClips.Length);
+
+			while (_lastKnockClip == clip)
+			{
+				clip = Random.Range(0, _knocksClips.Length);
+			}
+			_lastKnockClip = clip;
+
+			AudioManager.Instance.PlayEffectOnTmpSource(_knocksClips[clip]);
+			_machine.ServerSetWayfarerTarget(_lobby._ownedConnectionReferencePosition, false);
 		}
 	}
 }

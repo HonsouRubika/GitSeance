@@ -72,7 +72,43 @@ public class DialogManager : MonoBehaviour
         //PlayAtLine(Application.dataPath + "/dialogTest.txt", _nextLineToRead);
     }
 
-    private void DialogTimer()
+	public void PlaySingleLine(string filePath, int line)
+	{
+        line *= 2;
+		filePath = Application.dataPath + "/StreamingAssets/" + filePath;
+
+		if (_isActive)
+			return;
+		else
+		{
+			_inputStream = new StreamReader(filePath);
+			_uiCanva.SetActive(true);
+
+			//read line until desired one
+			for (int i = 0; i <= line; i++)
+			{
+				_inputStream.ReadLine();
+			}
+			string inp_ln = _inputStream.ReadLine();
+
+			//check if at end of file
+			if (_inputStream.EndOfStream)
+				return;
+
+			DisplayDialog(inp_ln);
+
+			_timeLastSentences = Time.time;
+			_uiCanva.SetActive(true);
+			_isActive = true;
+
+			while (_inputStream.EndOfStream)
+			{
+				_inputStream.ReadLine();
+			}
+		}
+	}
+
+	private void DialogTimer()
     {
         if (_isActive && !_inputStream.EndOfStream && Time.time > _timeLastSentences + _timeBetweenSentences)
         {
@@ -90,7 +126,6 @@ public class DialogManager : MonoBehaviour
         }
         else if (_isActive && _inputStream.EndOfStream && Time.time > _timeLastSentences + _timeBetweenSentences)
         {
-            Debug.Log("finished reading");
             _inputStream.Close();
             _isActive = false;
             _dialogUI.text = "";
@@ -98,7 +133,6 @@ public class DialogManager : MonoBehaviour
         }
         else if (_inputStream != null && !_isActive && Time.time > _timeLastSentences + _timeBetweenSentences)
         {
-            Debug.Log("dialog system deactivated");
             _inputStream.Close();
             _isActive = false;
             _dialogUI.text = "";

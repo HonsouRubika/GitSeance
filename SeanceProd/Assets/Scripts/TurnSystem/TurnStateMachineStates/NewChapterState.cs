@@ -13,6 +13,7 @@ namespace Seance.TurnSystem
 		TurnStateMachine _machine;
 
 		Sequencer _sequencer = new();
+		[SerializeField] AudioClip _introClip;
 
 		private void Start()
 		{
@@ -23,7 +24,8 @@ namespace Seance.TurnSystem
 		{
 			/// ==> Play game begin events
 
-			_sequencer.Append(DialogManager.Instance.CalculateTimeToReadFile("Dialogs/dialogTest.txt"), () => DialogManager.Instance.StartDialogFromFile("Dialogs/dialogTest.txt"));
+			AudioManager.Instance.PlayMJVoice(_introClip);
+			_sequencer.Append(_introClip.length, () => DialogManager.Instance.StartDialogFromFile("Dialogs/IntroductionText.txt"));
 
 			if (_machine.IsServer)
 			{

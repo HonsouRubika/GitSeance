@@ -8,7 +8,4 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/ProtoWeek/Main.unity
     guid: afc3911f07f617b4d8be69999d16d911
-  - enabled: 1
-    path: Assets/Scenes/ProtoWeek/JulienDev.unity
-    guid: a918ad3cb90b10e4faff3405d32d61c7
   m_configObjects: {}

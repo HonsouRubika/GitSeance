@@ -9,6 +9,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Seance.Wayfarer;
+using Seance.Interactions;
 
 namespace Seance.TurnSystem
 {
@@ -55,7 +56,10 @@ namespace Seance.TurnSystem
 
 			_activePlayer++;
 			if (_activePlayer > 2)
+			{
 				_activePlayer = 0;
+				ObserversDecreaseAllPlayersDiceValue();
+			}
 
 			ObserversPlayNextTurn(_activePlayer);
 		}
@@ -77,6 +81,12 @@ namespace Seance.TurnSystem
 			WayfarerManager.Instance.MoveToPosition(nextPlayer, true);
 
 			SetState("PlayerTurn", true);
+		}
+
+		[ObserversRpc]
+		public void ObserversDecreaseAllPlayersDiceValue()
+		{
+			Dice20.Instance.DecreaseDiceValue();
 		}
 
 		[ServerRpc(RequireOwnership = false)]

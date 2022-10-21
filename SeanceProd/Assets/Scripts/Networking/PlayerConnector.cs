@@ -24,19 +24,6 @@ namespace Seance.Networking
 
 		#endregion
 
-		private void Update()
-        {
-			if(Input.GetKeyDown(KeyCode.C))
-            {
-				CreateLobby();
-            }
-
-            if(Input.GetKeyDown(KeyCode.J))
-            {
-				JoinLobby("localhost");
-            }
-        }
-
         public void CreateLobby()
 		{
 			_networkManager.ServerManager.StartConnection();
