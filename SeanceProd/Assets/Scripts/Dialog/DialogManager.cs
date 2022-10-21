@@ -20,6 +20,10 @@ public class DialogManager : MonoBehaviour
     public GameObject _uiCanva;
     public TMP_Text _dialogUI;
 
+    //random reading
+    int _lastRandomLineRead;
+
+
     void Awake()
     {
         #region Make Singleton
@@ -84,6 +88,14 @@ public class DialogManager : MonoBehaviour
         else if (_isActive && _inputStream.EndOfStream && Time.time > _timeLastSentences + _timeBetweenSentences)
         {
             Debug.Log("finished reading");
+            _inputStream.Close();
+            _isActive = false;
+            _dialogUI.text = "";
+            _uiCanva.SetActive(false);
+        }
+        else if (!_isActive && Time.time > _timeLastSentences + _timeBetweenSentences)
+        {
+            Debug.Log("dialog system deactivated");
             _inputStream.Close();
             _isActive = false;
             _dialogUI.text = "";
@@ -163,6 +175,9 @@ public class DialogManager : MonoBehaviour
 
     public void PlayAtLine(string filePath, int line)
     {
+
+        filePath = Application.dataPath + "/StreamingAssets/" + filePath;
+
         if (_isActive)
             return;
         else
@@ -192,9 +207,10 @@ public class DialogManager : MonoBehaviour
 
     public float CalculateTimeToReadFile(string filePath)
     {
-		filePath = Application.dataPath + filePath;
 
-		StreamReader tmpStream = new StreamReader(filePath);
+        filePath = Application.dataPath + "/StreamingAssets/" + filePath;
+
+        StreamReader tmpStream = new StreamReader(filePath);
         float totalTime = 0;
 
         while (!tmpStream.EndOfStream)
@@ -229,5 +245,46 @@ public class DialogManager : MonoBehaviour
 
 
         return totalTime;
+    }
+
+    public void RandomReatAtLine(string filePath, int[] lines)
+    {
+
+        filePath = Application.dataPath + "/StreamingAssets/" + filePath;
+
+        //rdm nb
+        int rdmNb = lines[UnityEngine.Random.Range(0, lines.Length)];
+
+
+        if (_isActive)
+            return;
+        else
+        {
+            _inputStream = new StreamReader(filePath);
+            _uiCanva.SetActive(true);
+
+            //read line until desired one
+            for (int i = 0; i < rdmNb; i++)
+            {
+                _inputStream.ReadLine();
+            }
+            string inp_ln = _inputStream.ReadLine();
+
+
+            DisplayDialog(inp_ln);
+            //Debug.Log("reading continues at line : " + inp_ln);
+
+            _timeLastSentences = Time.time;
+            _uiCanva.SetActive(true);
+            _isActive = true;
+
+            //check if at end of file
+            if (_inputStream.EndOfStream)
+                return;
+            else
+            {
+                _isActive = false;
+            }
+        }
     }
 }

@@ -61,7 +61,7 @@ namespace Seance.TurnSystem
             _machine.ServerPlayNextTurn();
         }
 
-        public void PlayerCheated()
+        public void PlayerCheatedDice()
         {
             //player has cheated trigger
             Debug.Log("player changed dice value");
