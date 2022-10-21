@@ -12,6 +12,8 @@ public class DialogManager : MonoBehaviour
     public static DialogManager Instance;
 
     public bool _isActive;
+    public bool _isAudioLinked;
+
     public float _timeBetweenSentences = 3f;
     private float _timeLastSentences;
     private StreamReader _inputStream;
@@ -42,6 +44,7 @@ public class DialogManager : MonoBehaviour
     private void Start()
     {
         _isActive = false;
+        _isAudioLinked = false;
         _uiCanva.SetActive(false);
         _nextLineToRead = 0;
 
@@ -118,6 +121,7 @@ public class DialogManager : MonoBehaviour
 
             //activate UI
             _isActive = true;
+            _isAudioLinked = false;
             _inputStream = new StreamReader(filePath);
             _uiCanva.SetActive(true);
 
@@ -139,11 +143,16 @@ public class DialogManager : MonoBehaviour
         else if (txt[0].Equals('#'))
         {
             //exception handler
-            if (txt.Contains("time"))
+            if (txt.Equals("#time=voice"))
+            {
+                _isAudioLinked = true;
+            }
+            else if (txt.Contains("time"))
             {
                 string newTimeInChar = txt[txt.Length - 1] + "";
                 int newTime = Int16.Parse(newTimeInChar);
                 _timeBetweenSentences = newTime;
+                _isAudioLinked = false;
                 Debug.Log("new time between sentences setted : " + _timeBetweenSentences);
             }
             else if (txt.Equals("#break"))
@@ -156,6 +165,20 @@ public class DialogManager : MonoBehaviour
         {
             //display texte on UI
             _dialogUI.text = txt;
+
+            //link to display time to audio
+            if(_isAudioLinked && AudioManager.Instance != null && AudioManager.Instance._mjSource.isPlaying)
+            {
+                _timeBetweenSentences = AudioManager.Instance._mjSource.clip.length + 2f;
+            }
+            else if (_isAudioLinked && AudioManager.Instance == null)
+            {
+                Debug.LogError("AudioManager missing is Scene");
+            }
+            else if(_isAudioLinked && !AudioManager.Instance._mjSource.isPlaying)
+            {
+                Debug.LogError("Audio clip must start before displaying dialog");
+            }
 
             return true;
         }
