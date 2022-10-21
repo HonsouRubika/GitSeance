@@ -50,7 +50,12 @@ namespace Seance.Wayfarer
 
 		public void MoveToPosition(int positionIndex)
 		{
-			if (positionIndex == _currentTarget)
+			MoveToPosition(positionIndex, false);
+		}
+
+		public void MoveToPosition(int positionIndex, bool forcePosition)
+		{
+			if (positionIndex == _currentTarget && !forcePosition)
 				return;
 
 			if (_isRotating)

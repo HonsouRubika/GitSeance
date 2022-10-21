@@ -74,7 +74,7 @@ namespace Seance.TurnSystem
 			if (LobbyManager.Instance._ownedConnectionReferencePosition == _activePlayer)
 				_isPlaying = true;
 
-			WayfarerManager.Instance.MoveToPosition(nextPlayer);
+			WayfarerManager.Instance.MoveToPosition(nextPlayer, true);
 
 			SetState("PlayerTurn", true);
 		}

@@ -1,6 +1,4 @@
-#time=1
 Bienvenue Héros !
-#time=5
 Je serai votre guide à travers les sombres couloirs de ce château en décrépitude.
 Prenez les bonnes décisions face aux dangers que je vous réserve et la fortune vous sourira.
 Commettez des impairs, et vous en regretterez les conséquences…

@@ -96,7 +96,7 @@ public class DialogManager : MonoBehaviour
             _dialogUI.text = "";
             _uiCanva.SetActive(false);
         }
-        else if (!_isActive && Time.time > _timeLastSentences + _timeBetweenSentences)
+        else if (_inputStream != null && !_isActive && Time.time > _timeLastSentences + _timeBetweenSentences)
         {
             Debug.Log("dialog system deactivated");
             _inputStream.Close();
@@ -227,6 +227,8 @@ public class DialogManager : MonoBehaviour
 
     public float CalculateTimeToReadFile(string filePath)
     {
+        if (_isAudioLinked)
+            return -1f;
 
         filePath = Application.dataPath + "/StreamingAssets/" + filePath;
 

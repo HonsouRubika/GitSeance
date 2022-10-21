@@ -25,6 +25,8 @@ namespace Seance.TurnSystem
         [SerializeField] AudioClip _diceClip;
         [SerializeField] AudioClip _knocksClip;
 
+        CountdownTimer _miTurnTimer = new();
+        CountdownTimer _fullTurnTimer = new();
 
 		private void Start()
         {
@@ -37,6 +39,20 @@ namespace Seance.TurnSystem
         {
             if (!_machine.IsPlaying)
                 return;
+
+            _miTurnTimer.SetTime(15f, DisplayMiTurnDialog);
+            _fullTurnTimer.SetTime(30f, DisplayFullTurnDialog);
+        }
+
+        void DisplayMiTurnDialog()
+        {
+            //dialog mi turn
+        }
+
+        void DisplayFullTurnDialog()
+        {
+            //Dialog full turn
+            EndTurn();
         }
 
         public void OnClick(InputAction.CallbackContext context)
@@ -71,11 +87,10 @@ namespace Seance.TurnSystem
 
         public void PlayerCheatedDice()
         {
-            if(_wayfarer.CurrentTarget == _machine.ActivePlayer)
+            if(_wayfarer.CurrentTarget == _lobby._ownedConnectionReferencePosition)
             {
                 _machine.ServerSetWayfarerTarget(_lobby._ownedConnectionReferencePosition, true);
 				//AudioManager.Instance.PlayEffect(_diceClip);
-
 			}
 		}
 

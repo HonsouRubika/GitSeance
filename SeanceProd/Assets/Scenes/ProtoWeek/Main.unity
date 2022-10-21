@@ -153,8 +153,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _transitionDuration: 1
-  _baseVolume: {fileID: 1144606342}
-  _watchedVolume: {fileID: 75354289}
+  _baseVolume: {fileID: 75354289}
+  _watchedVolume: {fileID: 1144606342}
   _spottedVolume: {fileID: 1919695243}
 --- !u!4 &9238445
 Transform:
@@ -355,6 +355,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: PostProcessVolume Watched
+      objectReference: {fileID: 0}
+    - target: {fileID: 2474597704331581435, guid: 9dd925626738dd14e86c8c10b50f6817,
+        type: 3}
+      propertyPath: weight
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 9dd925626738dd14e86c8c10b50f6817, type: 3}
@@ -2395,7 +2400,7 @@ PrefabInstance:
     - target: {fileID: 9004787162235885291, guid: f2ab6b3fb40b587428379a2b0f09d82d,
         type: 3}
       propertyPath: weight
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: f2ab6b3fb40b587428379a2b0f09d82d, type: 3}
@@ -2997,6 +3002,8 @@ MonoBehaviour:
   _interactableLayer:
     serializedVersion: 2
     m_Bits: 64
+  _diceClip: {fileID: 0}
+  _knocksClip: {fileID: 0}
 --- !u!114 &1607681937
 MonoBehaviour:
   m_ObjectHideFlags: 0
