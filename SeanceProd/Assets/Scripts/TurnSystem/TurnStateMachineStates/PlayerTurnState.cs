@@ -69,7 +69,7 @@ namespace Seance.TurnSystem
             _machine.ServerPlayNextTurn();
         }
 
-        public void PlayerCheated()
+        public void PlayerCheatedDice()
         {
             if(_wayfarer.CurrentTarget == _machine.ActivePlayer)
             {

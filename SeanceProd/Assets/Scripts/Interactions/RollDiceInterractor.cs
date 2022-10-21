@@ -20,7 +20,7 @@ namespace Seance.Interactions
         // Start is called before the first frame update
         public override void Interact(PlayerTurnState turn)
         {
-            turn.PlayerCheated();
+            turn.PlayerCheatedDice();
 
             _dice.IncreaseDiceValue();
         }

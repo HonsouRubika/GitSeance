@@ -12,6 +12,8 @@ public class DialogManager : MonoBehaviour
     public static DialogManager Instance;
 
     public bool _isActive;
+    public bool _isAudioLinked;
+
     public float _timeBetweenSentences = 3f;
     private float _timeLastSentences;
     private StreamReader _inputStream;
@@ -19,6 +21,10 @@ public class DialogManager : MonoBehaviour
 
     public GameObject _uiCanva;
     public TMP_Text _dialogUI;
+
+    //random reading
+    int _lastRandomLineRead;
+
 
     void Awake()
     {
@@ -38,6 +44,7 @@ public class DialogManager : MonoBehaviour
     private void Start()
     {
         _isActive = false;
+        _isAudioLinked = false;
         _uiCanva.SetActive(false);
         _nextLineToRead = 0;
 
@@ -89,6 +96,14 @@ public class DialogManager : MonoBehaviour
             _dialogUI.text = "";
             _uiCanva.SetActive(false);
         }
+        else if (!_isActive && Time.time > _timeLastSentences + _timeBetweenSentences)
+        {
+            Debug.Log("dialog system deactivated");
+            _inputStream.Close();
+            _isActive = false;
+            _dialogUI.text = "";
+            _uiCanva.SetActive(false);
+        }
     }
 
     public void StartDialogFromFile(string filePath)
@@ -104,6 +119,7 @@ public class DialogManager : MonoBehaviour
 
             //activate UI
             _isActive = true;
+            _isAudioLinked = false;
             _inputStream = new StreamReader(filePath);
             _uiCanva.SetActive(true);
 
@@ -125,11 +141,16 @@ public class DialogManager : MonoBehaviour
         else if (txt[0].Equals('#'))
         {
             //exception handler
-            if (txt.Contains("time"))
+            if (txt.Equals("#time=voice"))
+            {
+                _isAudioLinked = true;
+            }
+            else if (txt.Contains("time"))
             {
                 string newTimeInChar = txt[txt.Length - 1] + "";
                 int newTime = Int16.Parse(newTimeInChar);
                 _timeBetweenSentences = newTime;
+                _isAudioLinked = false;
             }
             else if (txt.Equals("#break"))
             {
@@ -141,6 +162,20 @@ public class DialogManager : MonoBehaviour
         {
             //display texte on UI
             _dialogUI.text = txt;
+
+            //link to display time to audio
+            if(_isAudioLinked && AudioManager.Instance != null && AudioManager.Instance._mjSource.isPlaying)
+            {
+                _timeBetweenSentences = AudioManager.Instance._mjSource.clip.length + 2f;
+            }
+            else if (_isAudioLinked && AudioManager.Instance == null)
+            {
+                Debug.LogError("AudioManager missing is Scene");
+            }
+            else if(_isAudioLinked && !AudioManager.Instance._mjSource.isPlaying)
+            {
+                Debug.LogError("Audio clip must start before displaying dialog");
+            }
 
             return true;
         }
@@ -160,6 +195,9 @@ public class DialogManager : MonoBehaviour
 
     public void PlayAtLine(string filePath, int line)
     {
+
+        filePath = Application.dataPath + "/StreamingAssets/" + filePath;
+
         if (_isActive)
             return;
         else
@@ -189,9 +227,10 @@ public class DialogManager : MonoBehaviour
 
     public float CalculateTimeToReadFile(string filePath)
     {
-		filePath = Application.dataPath + "/StreamingAssets/" + filePath;
 
-		StreamReader tmpStream = new StreamReader(filePath);
+        filePath = Application.dataPath + "/StreamingAssets/" + filePath;
+
+        StreamReader tmpStream = new StreamReader(filePath);
         float totalTime = 0;
 
         while (!tmpStream.EndOfStream)
@@ -226,5 +265,46 @@ public class DialogManager : MonoBehaviour
 
 
         return totalTime;
+    }
+
+    public void RandomReatAtLine(string filePath, int[] lines)
+    {
+
+        filePath = Application.dataPath + "/StreamingAssets/" + filePath;
+
+        //rdm nb
+        int rdmNb = lines[UnityEngine.Random.Range(0, lines.Length)];
+
+
+        if (_isActive)
+            return;
+        else
+        {
+            _inputStream = new StreamReader(filePath);
+            _uiCanva.SetActive(true);
+
+            //read line until desired one
+            for (int i = 0; i < rdmNb; i++)
+            {
+                _inputStream.ReadLine();
+            }
+            string inp_ln = _inputStream.ReadLine();
+
+
+            DisplayDialog(inp_ln);
+            //Debug.Log("reading continues at line : " + inp_ln);
+
+            _timeLastSentences = Time.time;
+            _uiCanva.SetActive(true);
+            _isActive = true;
+
+            //check if at end of file
+            if (_inputStream.EndOfStream)
+                return;
+            else
+            {
+                _isActive = false;
+            }
+        }
     }
 }
