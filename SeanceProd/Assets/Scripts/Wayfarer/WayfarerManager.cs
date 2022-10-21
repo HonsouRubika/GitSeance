@@ -1,7 +1,10 @@
 /// Author: Nicolas Capelier
 /// Last modified by: Nicolas Capelier
 
+using FishNet.Connection;
+using FishNet.Object;
 using Seance.Networking;
+using Seance.PostProcess;
 using Seance.TurnSystem;
 using System.Collections;
 using System.Collections.Generic;
@@ -9,18 +12,24 @@ using UnityEngine;
 
 namespace Seance.Wayfarer
 {
-    public class WayfarerManager : MonoBehaviour
-    {
-        [Header("Params")]
-        [SerializeField] float _headMovementTime;
+	public class WayfarerManager : NetworkBehaviour
+	{
+		[Header("Params")]
+		[SerializeField] float _headMovementTime;
 
-        [Header("References")]
-        [SerializeField] Transform _renderer;
-        [SerializeField] Transform[] _positions;
+		[Header("References")]
+		[SerializeField] Transform _renderer;
+		[SerializeField] Transform[] _positions;
+		[SerializeField] AudioClip _punishClip;
 
-        QuaternionLerper _lerper = new();
+		LobbyManager _lobby;
+		PostProcessManager _postProcessManager;
 
-        LobbyManager _lobby;
+		QuaternionLerper _lerper = new();
+		int _currentTarget;
+		public int CurrentTarget { get { return _currentTarget; } }
+		bool _isRotating;
+		public bool IsRotating { get { return _isRotating; } }
 
 		#region Singleton
 
@@ -31,20 +40,45 @@ namespace Seance.Wayfarer
 			Instance = this;
 		}
 
-        #endregion
+		#endregion
 
-        private void Start()
-        {
-            _lobby = LobbyManager.Instance;
-        }
+		private void Start()
+		{
+			_lobby = LobbyManager.Instance;
+			_postProcessManager = PostProcessManager.Instance;
+		}
 
-        public void MoveToPosition(int positionIndex)
-        {
-            Quaternion origin = _renderer.rotation;
+		public void MoveToPosition(int positionIndex)
+		{
+			if (positionIndex == _currentTarget)
+				return;
 
-            int index = _lobby._playerInstances[positionIndex]._worldPositionIndex;
+			if (_isRotating)
+				_lerper.Cancel();
 
-            _lerper.Lerp(origin, _positions[index].rotation, _headMovementTime, delta => _renderer.rotation = delta);
-        }
-    }
+			_isRotating = true;
+
+			if (positionIndex == _lobby._ownedConnectionReferencePosition)
+				_postProcessManager.SetPostProcess(PostProcessType.Watched);
+			else
+				_postProcessManager.SetPostProcess(PostProcessType.Base);
+
+			_currentTarget = positionIndex;
+
+			Quaternion origin = _renderer.rotation;
+
+			int index = _lobby._playerInstances[positionIndex]._worldPositionIndex;
+
+			_lerper.Lerp(origin, _positions[index].rotation, _headMovementTime, delta => _renderer.rotation = delta, () => _isRotating = false);
+		}
+
+		[TargetRpc]
+		public void TargetPunishPlayer(NetworkConnection conn)
+		{
+			Debug.Log("Spotted");
+			_postProcessManager.SetPostProcess(PostProcessType.Spotted);
+			//AudioManager.Instance.PlayMJVoice(_punishClip);
+			//DialogManager.Instance.StartDialogFromFile("Dialogs/PunishText.txt");
+		}
+	}
 }

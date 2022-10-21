@@ -68,6 +68,8 @@ namespace Seance.Player
 				return;
 			}
 
+			_input.enabled = true;
+
 			//Find and set OwnedConnectionReferencePosition
 
 			for (int i = 0; i < _lobby._connections.Count; i++)
@@ -93,23 +95,6 @@ namespace Seance.Player
 				if (positionIndex > 2)
 					positionIndex = 0;
 			}
-
-			//transform.position = _levelReferences._activePlayerTransform.position;
-			//transform.rotation = _levelReferences._activePlayerTransform.rotation;
-
-			//positionIndex++;
-			//if (positionIndex > 2)
-			//	positionIndex = 0;
-
-			//_lobby._playerInstances[positionIndex].transform.position = _levelReferences._leftPlayerTransform.position;
-			//_lobby._playerInstances[positionIndex].transform.rotation = _levelReferences._leftPlayerTransform.rotation;
-
-			//positionIndex++;
-			//if (positionIndex > 2)
-			//	positionIndex = 0;
-
-			//_lobby._playerInstances[positionIndex].transform.position = _levelReferences._rightPlayerTransform.position;
-			//_lobby._playerInstances[positionIndex].transform.rotation = _levelReferences._rightPlayerTransform.rotation;
 
 			//Set starting deck for this player
 

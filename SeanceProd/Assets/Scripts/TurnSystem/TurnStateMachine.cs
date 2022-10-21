@@ -79,6 +79,20 @@ namespace Seance.TurnSystem
 			SetState("PlayerTurn", true);
 		}
 
+		[ServerRpc(RequireOwnership = false)]
+		public void ServerSetWayfarerTarget(int playerIndex, bool punish)
+		{
+			ObserversSetWayfarerTarget(playerIndex);
+			if(punish)
+				WayfarerManager.Instance.TargetPunishPlayer(LobbyManager.Instance._connections[playerIndex]);
+		}
+
+		[ObserversRpc]
+		public void ObserversSetWayfarerTarget(int playerIndex)
+		{
+			WayfarerManager.Instance.MoveToPosition(playerIndex);
+		}
+
 		/// Turn order system with random first player
 
 		//public void SetChapterTurnOrder(int firstPlayerIndex)

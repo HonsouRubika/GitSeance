@@ -93,13 +93,11 @@ public class DialogManager : MonoBehaviour
 
     public void StartDialogFromFile(string filePath)
     {
-        Debug.Log("Starting dialog");
-
         if (_isActive)
             return;
         else
         {
-            filePath = Application.dataPath + filePath;
+            filePath = Application.dataPath + "/StreamingAssets/" + filePath;
 
             //reset initial var
             _timeBetweenSentences = 3f;
@@ -132,7 +130,6 @@ public class DialogManager : MonoBehaviour
                 string newTimeInChar = txt[txt.Length - 1] + "";
                 int newTime = Int16.Parse(newTimeInChar);
                 _timeBetweenSentences = newTime;
-                Debug.Log("new time between sentences setted : " + _timeBetweenSentences);
             }
             else if (txt.Equals("#break"))
             {
@@ -192,7 +189,7 @@ public class DialogManager : MonoBehaviour
 
     public float CalculateTimeToReadFile(string filePath)
     {
-		filePath = Application.dataPath + filePath;
+		filePath = Application.dataPath + "/StreamingAssets/" + filePath;
 
 		StreamReader tmpStream = new StreamReader(filePath);
         float totalTime = 0;

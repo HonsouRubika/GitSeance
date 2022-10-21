@@ -4,6 +4,7 @@
 using Seance.Interactions;
 using Seance.Networking;
 using Seance.Utility;
+using Seance.Wayfarer;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -15,14 +16,21 @@ namespace Seance.TurnSystem
     {
         TurnStateMachine _machine;
         LobbyManager _lobby;
+        WayfarerManager _wayfarer;
 
         [Header("Params")]
         [SerializeField] LayerMask _interactableLayer;
 
-        private void Start()
+        [Header("References")]
+        [SerializeField] AudioClip _diceClip;
+        [SerializeField] AudioClip _knocksClip;
+
+
+		private void Start()
         {
             _machine = TurnStateMachine.Instance;
             _lobby = LobbyManager.Instance;
+            _wayfarer = WayfarerManager.Instance;
         }
 
         public override void OnStateEnter()
@@ -63,14 +71,18 @@ namespace Seance.TurnSystem
 
         public void PlayerCheated()
         {
-            //player has cheated trigger
-            Debug.Log("player changed dice value");
-        }
+            if(_wayfarer.CurrentTarget == _machine.ActivePlayer)
+            {
+                _machine.ServerSetWayfarerTarget(_lobby._ownedConnectionReferencePosition, true);
+				//AudioManager.Instance.PlayEffect(_diceClip);
+
+			}
+		}
 
         public void PlayerKnocks()
         {
-            //player get wayfarer focus
-            Debug.Log("player knocks");
-        }
-    }
+            _machine.ServerSetWayfarerTarget(_lobby._ownedConnectionReferencePosition, false);
+			//AudioManager.Instance.PlayMJVoice(_knocksClip);
+		}
+	}
 }
