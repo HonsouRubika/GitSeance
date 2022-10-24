@@ -64,7 +64,7 @@ namespace Seance.Audio
 			_musicSource.Play();
 		}
 
-		public void PlayMJVoice(AudioClip clip)
+		public void PlayWayfarerVoice(AudioClip clip)
 		{
 			_mjSource.clip = clip;
 			_mjSource.Play();

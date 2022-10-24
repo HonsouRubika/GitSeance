@@ -1,12 +1,9 @@
 /// Author: Nicolas Capelier
-/// Last modified by: Julien Haigron
+/// Last modified by: Nicolas Capelier
 
 using Seance.Interactions;
 using Seance.Networking;
-using Seance.Utility;
 using Seance.Wayfarer;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -54,38 +51,38 @@ namespace Seance.TurnSystem
 
 		void DisplayMiTurnDialog()
 		{
-			GameManager.AudioManager.PlayMJVoice(_miTurnClip);
+			GameManager.AudioManager.PlayWayfarerVoice(_miTurnClip);
 			GameManager.DialogManager.StartDialogFromFile("Dialogs/MiTurnText.txt");
 		}
 
 		void DisplayFullTurnDialog()
 		{
-			GameManager.AudioManager.PlayMJVoice(_fullTurnClip);
+			GameManager.AudioManager.PlayWayfarerVoice(_fullTurnClip);
 			GameManager.DialogManager.StartDialogFromFile("Dialogs/FullTurnText.txt");
 			EndTurn();
 		}
 
-		public void OnClick(InputAction.CallbackContext context)
-		{
-			if (!context.started)
-				return;
+		//public void OnClick(InputAction.CallbackContext context)
+		//{
+		//	if (!context.started)
+		//		return;
 
-			RaycastHit hit;
+		//	RaycastHit hit;
 
-			Ray ray = _lobby._ownedPlayerInstance.CameraController.Camera.ScreenPointToRay(Input.mousePosition);
+		//	Ray ray = _lobby._ownedPlayerInstance.CameraController.Camera.ScreenPointToRay(Input.mousePosition);
 
-			Debug.DrawRay(ray.origin, ray.direction * 50f, Color.red, .8f);
+		//	Debug.DrawRay(ray.origin, ray.direction * 50f, Color.red, .8f);
 
-			if (Physics.Raycast(ray, out hit, 50f, _interactableLayer))
-			{
-				Interactor interactor;
+		//	if (Physics.Raycast(ray, out hit, 50f, _interactableLayer))
+		//	{
+		//		Interactor interactor;
 
-				if (hit.transform.TryGetComponent(out interactor))
-				{
-					interactor.Interact(this);
-				}
-			}
-		}
+		//		if (hit.transform.TryGetComponent(out interactor))
+		//		{
+		//			interactor.Interact();
+		//		}
+		//	}
+		//}
 
 		public void EndTurn()
 		{

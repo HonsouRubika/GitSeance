@@ -3,12 +3,8 @@
 
 using FishNet.Connection;
 using FishNet.Object;
-using Seance.Interactions;
 using Seance.Networking;
 using Seance.PostProcess;
-using Seance.TurnSystem;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 namespace Seance.Wayfarer
@@ -79,7 +75,7 @@ namespace Seance.Wayfarer
 				clip = Random.Range(0, _punishClips.Length);
 			}
 			_lastClip = clip;
-			GameManager.AudioManager.PlayMJVoice(_punishClips[clip]);
+			GameManager.AudioManager.PlayWayfarerVoice(_punishClips[clip]);
 			GameManager.DialogManager.PlaySingleLine("Dialogs/PunishText.txt", clip);
 		}
 	}

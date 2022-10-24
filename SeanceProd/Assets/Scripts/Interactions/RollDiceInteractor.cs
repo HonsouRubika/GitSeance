@@ -22,7 +22,7 @@ namespace Seance.Interactions
 		}
 
 		// Start is called before the first frame update
-		public override void Interact(PlayerTurnState turn)
+		public override void Interact()
 		{
 			if (_dice.DiceValue < 20)
 			{
@@ -36,7 +36,7 @@ namespace Seance.Interactions
 				GameManager.AudioManager.PlayEffectOnTmpSource(_diceClips[clip]);
 			}
 
-			turn.PlayerCheatedDice();
+			//turn.PlayerCheatedDice();
 
 			_dice.IncreaseDiceValue();
 		}

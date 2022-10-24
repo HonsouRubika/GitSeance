@@ -12,9 +12,9 @@ namespace Seance.Interactions
     {
 
         // Start is called before the first frame update
-        public override void Interact(PlayerTurnState turn)
+        public override void Interact()
         {
-            turn.PlayerKnocks();
+            //turn.PlayerKnocks();
 
             //play knock sound effect
             //AudioManager.Instance.PlayEffectOnTmpSource();

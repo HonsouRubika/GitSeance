@@ -3,17 +3,12 @@
 
 using FishNet.Object;
 using Seance.CardSystem;
-using Seance.Networking;
-using Seance.Player;
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using Seance.Wayfarer;
-using Seance.Interactions;
 
 namespace Seance.TurnSystem
 {
-	public class TurnStateMachine : MonoStateMachine
+	public class TurnStateMachine : MonoStateMachine // NetworkBehaviour inherited class
 	{
 		[Header("Params")]
 		public StartingDeck[] _startingDecks;
@@ -39,7 +34,7 @@ namespace Seance.TurnSystem
 		[ServerRpc(RequireOwnership = false)]
 		public void ServerPlayNextTurn()
 		{
-			if (!IsServer)
+			if (!IsServer) //may be useless => requieres further testing
 				return;
 
 			_activePlayer++;
@@ -76,7 +71,7 @@ namespace Seance.TurnSystem
 		public void ServerSetWayfarerTarget(int playerIndex, bool punish)
 		{
 			ObserversSetWayfarerTarget(playerIndex);
-			if(punish)
+			if (punish)
 				GameManager.WayfarerAI.TargetPunishPlayer(GameManager.Lobby._connections[playerIndex]);
 		}
 

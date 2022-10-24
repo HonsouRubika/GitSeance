@@ -24,7 +24,7 @@ namespace Seance.TurnSystem
 		{
 			/// ==> Play game begin events
 
-			GameManager.AudioManager.PlayMJVoice(_introClip);
+			GameManager.AudioManager.PlayWayfarerVoice(_introClip);
 			_sequencer.Append(_introClip.length, () => GameManager.DialogManager.StartDialogFromFile("Dialogs/IntroductionText.txt"));
 
 			if (_machine.IsServer)
