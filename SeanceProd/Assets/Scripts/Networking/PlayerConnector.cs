@@ -13,17 +13,6 @@ namespace Seance.Networking
 		[Header("Params")]
 		[SerializeField] ushort _serverPort;
 
-		#region Singleton
-
-		public static PlayerConnector Instance;
-
-		private void Awake()
-		{
-			Instance = this;
-		}
-
-		#endregion
-
         public void CreateLobby()
 		{
 			_networkManager.ServerManager.StartConnection();

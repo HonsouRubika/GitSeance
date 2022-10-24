@@ -10,8 +10,6 @@ namespace Seance.PostProcess
 {
     public class PostProcessManager : MonoBehaviour
     {
-        public static PostProcessManager Instance;
-
         [Header("Params")]
         [SerializeField] [Range(0f, 5f)] float _transitionDuration = 1f;
 
@@ -23,11 +21,6 @@ namespace Seance.PostProcess
         Dictionary<PostProcessType, Volume> _volumes = new();
 
         bool _isLerping;
-
-        private void Awake()
-        {
-            Instance = this;
-        }
 
         private void Start()
         {

@@ -13,7 +13,7 @@ using UnityEngine;
 
 namespace Seance.Wayfarer
 {
-	public class WayfarerManager : NetworkBehaviour
+	public class WayfarerAI : NetworkBehaviour
 	{
 		[Header("Params")]
 		[SerializeField] float _headMovementTime;
@@ -33,21 +33,10 @@ namespace Seance.Wayfarer
 		bool _isRotating;
 		public bool IsRotating { get { return _isRotating; } }
 
-		#region Singleton
-
-		public static WayfarerManager Instance;
-
-		private void Awake()
-		{
-			Instance = this;
-		}
-
-		#endregion
-
 		private void Start()
 		{
-			_lobby = LobbyManager.Instance;
-			_postProcessManager = PostProcessManager.Instance;
+			_lobby = GameManager.Lobby;
+			_postProcessManager = GameManager.PostProcessManager;
 		}
 
 		public void MoveToPosition(int positionIndex)
@@ -74,7 +63,7 @@ namespace Seance.Wayfarer
 
 			Quaternion origin = _renderer.rotation;
 
-			int index = _lobby._playerInstances[positionIndex]._worldPositionIndex;
+			int index = _lobby._playerInstances[positionIndex].WorldPositionIndex;
 
 			_lerper.Lerp(origin, _positions[index].rotation, _headMovementTime, delta => _renderer.rotation = delta, () => _isRotating = false);
 		}
@@ -82,7 +71,7 @@ namespace Seance.Wayfarer
 		[TargetRpc]
 		public void TargetPunishPlayer(NetworkConnection conn)
 		{
-			Dice20.Instance.DecreaseDiceValue(2);
+			GameManager.LevelElements.PlayerHealthDice.DecreaseDiceValue(2);
 			_postProcessManager.SetPostProcess(PostProcessType.Spotted);
 			int clip = Random.Range(0, _punishClips.Length);
 			while (clip == _lastClip)
@@ -90,8 +79,8 @@ namespace Seance.Wayfarer
 				clip = Random.Range(0, _punishClips.Length);
 			}
 			_lastClip = clip;
-			AudioManager.Instance.PlayMJVoice(_punishClips[clip]);
-			DialogManager.Instance.PlaySingleLine("Dialogs/PunishText.txt", clip);
+			GameManager.AudioManager.PlayMJVoice(_punishClips[clip]);
+			GameManager.DialogManager.PlaySingleLine("Dialogs/PunishText.txt", clip);
 		}
 	}
 }

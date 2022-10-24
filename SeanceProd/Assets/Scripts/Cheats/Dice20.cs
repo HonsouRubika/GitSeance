@@ -11,7 +11,7 @@ namespace Seance.Interactions
 	/// <summary>
 	/// Edouard
 	/// </summary>
-	public class Dice20 : Singleton<Dice20>
+	public class Dice20 : MonoBehaviour
 	{
 		[Header("Dice")]
 		[SerializeField] private int _diceValue = 20;

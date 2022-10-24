@@ -9,13 +9,13 @@ using UnityEngine.InputSystem;
 
 namespace Seance.Player
 {
-    public class PlayerInputManager : MonoBehaviour
+    public class PlayerInputHandler : MonoBehaviour
     {
         TurnStateMachine _machine;
 
         private void Start()
         {
-            _machine = TurnStateMachine.Instance;
+            _machine = GameManager.TurnStateMachine;
 		}
 
         public void OnClick(InputAction.CallbackContext context)

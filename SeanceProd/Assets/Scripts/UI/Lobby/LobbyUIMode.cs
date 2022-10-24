@@ -26,8 +26,8 @@ namespace Seance.UI.Lobby
 
 		private void Start()
 		{
-			_connector = PlayerConnector.Instance;
-			_lobby = LobbyManager.Instance;
+			_connector = GameManager.Connector;
+			_lobby = GameManager.Lobby;
 
 			LobbyManager.OnConnectionCountChange += OnConnectionCountChange;
 			LobbyManager.OnClientSetup += SetupClient;

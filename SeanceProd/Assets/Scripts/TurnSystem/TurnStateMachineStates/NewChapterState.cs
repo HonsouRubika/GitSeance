@@ -17,15 +17,15 @@ namespace Seance.TurnSystem
 
 		private void Start()
 		{
-			_machine = TurnStateMachine.Instance;
+			_machine = GameManager.TurnStateMachine;
 		}
 
 		public override void OnStateEnter()
 		{
 			/// ==> Play game begin events
 
-			AudioManager.Instance.PlayMJVoice(_introClip);
-			_sequencer.Append(_introClip.length, () => DialogManager.Instance.StartDialogFromFile("Dialogs/IntroductionText.txt"));
+			GameManager.AudioManager.PlayMJVoice(_introClip);
+			_sequencer.Append(_introClip.length, () => GameManager.DialogManager.StartDialogFromFile("Dialogs/IntroductionText.txt"));
 
 			if (_machine.IsServer)
 			{

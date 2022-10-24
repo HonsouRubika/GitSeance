@@ -36,18 +36,6 @@ namespace Seance.TurnSystem
 
 		//[HideInInspector] public int[] _chapterTurnOrder = new int[4];
 
-		#region Singleton
-
-		public static TurnStateMachine Instance;
-
-		private void Awake()
-		{
-			Instance = this;
-		}
-
-		#endregion
-
-
 		[ServerRpc(RequireOwnership = false)]
 		public void ServerPlayNextTurn()
 		{
@@ -67,18 +55,13 @@ namespace Seance.TurnSystem
 		[ObserversRpc]
 		public void ObserversPlayNextTurn(int nextPlayer)
 		{
-			if (IsPlaying)
-			{
-				//Apply end of turn effects if needed
-			}
-
 			_isPlaying = false;
 			_activePlayer = nextPlayer;
 
-			if (LobbyManager.Instance._ownedConnectionReferencePosition == _activePlayer)
+			if (GameManager.Lobby._ownedConnectionReferencePosition == _activePlayer)
 				_isPlaying = true;
 
-			WayfarerManager.Instance.MoveToPosition(nextPlayer, true);
+			GameManager.WayfarerAI.MoveToPosition(nextPlayer, true);
 
 			SetState("PlayerTurn", true);
 		}
@@ -86,7 +69,7 @@ namespace Seance.TurnSystem
 		[ObserversRpc]
 		public void ObserversDecreaseAllPlayersDiceValue()
 		{
-			Dice20.Instance.DecreaseDiceValue();
+			GameManager.LevelElements.PlayerHealthDice.DecreaseDiceValue();
 		}
 
 		[ServerRpc(RequireOwnership = false)]
@@ -94,13 +77,13 @@ namespace Seance.TurnSystem
 		{
 			ObserversSetWayfarerTarget(playerIndex);
 			if(punish)
-				WayfarerManager.Instance.TargetPunishPlayer(LobbyManager.Instance._connections[playerIndex]);
+				GameManager.WayfarerAI.TargetPunishPlayer(GameManager.Lobby._connections[playerIndex]);
 		}
 
 		[ObserversRpc]
 		public void ObserversSetWayfarerTarget(int playerIndex)
 		{
-			WayfarerManager.Instance.MoveToPosition(playerIndex);
+			GameManager.WayfarerAI.MoveToPosition(playerIndex);
 		}
 
 		/// Turn order system with random first player

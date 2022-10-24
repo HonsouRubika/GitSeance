@@ -9,11 +9,16 @@ using UnityEngine;
 using System;
 using System.Linq;
 using Seance.TurnSystem;
+using Seance.UI.Lobby;
 
 namespace Seance.Networking
 {
 	public class LobbyManager : NetworkBehaviour
 	{
+		[Header("References")]
+		[SerializeField] LobbyUIMode _lobbyUIMode;
+		public LobbyUIMode LobbyUIMode { get { return _lobbyUIMode; }}
+
 		//Server only, used temporarily to track connected clients before game start
 		List<NetworkConnection> _serverConnections = new();
 
@@ -43,17 +48,6 @@ namespace Seance.Networking
 
 		//Number of client set up and ready to start
 		int _readyCount = 0;
-
-		#region Singleton
-
-		public static LobbyManager Instance;
-
-		private void Awake()
-		{
-			Instance = this;
-		}
-
-		#endregion
 
 		#region Lobby Creation
 
@@ -131,7 +125,7 @@ namespace Seance.Networking
 		[ObserversRpc]
 		void ObserversStartGame()
 		{
-			TurnStateMachine.Instance.Init();
+			GameManager.TurnStateMachine.Init();
 			//Init state machine
 		}
 

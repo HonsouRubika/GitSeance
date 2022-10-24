@@ -16,7 +16,7 @@ namespace Seance.TurnSystem
 	{
 		TurnStateMachine _machine;
 		LobbyManager _lobby;
-		WayfarerManager _wayfarer;
+		WayfarerAI _wayfarer;
 
 		[Header("Params")]
 		[SerializeField] LayerMask _interactableLayer;
@@ -33,9 +33,9 @@ namespace Seance.TurnSystem
 
 		private void Start()
 		{
-			_machine = TurnStateMachine.Instance;
-			_lobby = LobbyManager.Instance;
-			_wayfarer = WayfarerManager.Instance;
+			_machine = GameManager.TurnStateMachine;
+			_lobby = GameManager.Lobby;
+			_wayfarer = GameManager.WayfarerAI;
 		}
 
 		public override void OnStateEnter()
@@ -54,14 +54,14 @@ namespace Seance.TurnSystem
 
 		void DisplayMiTurnDialog()
 		{
-			AudioManager.Instance.PlayMJVoice(_miTurnClip);
-			DialogManager.Instance.StartDialogFromFile("Dialogs/MiTurnText.txt");
+			GameManager.AudioManager.PlayMJVoice(_miTurnClip);
+			GameManager.DialogManager.StartDialogFromFile("Dialogs/MiTurnText.txt");
 		}
 
 		void DisplayFullTurnDialog()
 		{
-			AudioManager.Instance.PlayMJVoice(_fullTurnClip);
-			DialogManager.Instance.StartDialogFromFile("Dialogs/FullTurnText.txt");
+			GameManager.AudioManager.PlayMJVoice(_fullTurnClip);
+			GameManager.DialogManager.StartDialogFromFile("Dialogs/FullTurnText.txt");
 			EndTurn();
 		}
 
@@ -116,7 +116,7 @@ namespace Seance.TurnSystem
 			}
 			_lastKnockClip = clip;
 
-			AudioManager.Instance.PlayEffectOnTmpSource(_knocksClips[clip]);
+			GameManager.AudioManager.PlayEffectOnTmpSource(_knocksClips[clip]);
 			_machine.ServerSetWayfarerTarget(_lobby._ownedConnectionReferencePosition, false);
 		}
 	}
