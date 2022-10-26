@@ -713,6 +713,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7136410b94e72074bb92ae361c7b365e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _clickRaycastLength: 50
+  _debugRaycasts: 1
+  _interactableLayer:
+    serializedVersion: 2
+    m_Bits: 0
 --- !u!1 &5099658965082868112
 GameObject:
   m_ObjectHideFlags: 0
@@ -869,12 +874,11 @@ MonoBehaviour:
   _componentIndexCache: 0
   _addedNetworkObject: {fileID: 4803490797086510935}
   _networkObjectCache: {fileID: 4803490797086510935}
-  _cameraParent: {fileID: 6141598527431058593}
-  _inputManager: {fileID: 6501388948785363583}
+  _inputHandler: {fileID: 6501388948785363583}
   _cameraController: {fileID: 1554753953917652432}
-  _input: {fileID: 8293160538889714536}
+  _cameraParent: {fileID: 473525961952174642}
   _zones: {fileID: 6916631911980476716}
-  _worldPositionIndex: 0
+  _playerInput: {fileID: 8293160538889714536}
 --- !u!114 &6916631911980476716
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -887,9 +891,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 84ace3e198c7df04cb47367abd4b6f4e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _deck: []
-  _hand: []
-  _discard: []
 --- !u!114 &4803490797086510935
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1091,7 +1092,6 @@ MonoBehaviour:
   _animator: {fileID: 8083588303904060630}
   _camera: {fileID: 2407767069327242979}
   _startPosition: {x: 1, y: 1}
-  _currentPosition: {x: 0, y: 0}
   _cameraMovementCooldown: 0.15
 --- !u!114 &5861616312316412237
 MonoBehaviour:
