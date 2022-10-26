@@ -1,3 +1,6 @@
+/// Author: Nicolas Capelier
+/// Last modified by: Nicolas Capelier
+
 using FishNet.Managing;
 using System.Collections;
 using UnityEngine;

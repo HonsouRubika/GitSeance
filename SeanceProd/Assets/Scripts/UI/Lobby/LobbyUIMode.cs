@@ -2,8 +2,6 @@
 /// Last modified by: Nicolas Capelier
 
 using Seance.Networking;
-using System.Collections;
-using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 
@@ -11,16 +9,16 @@ namespace Seance.UI.Lobby
 {
 	public class LobbyUIMode : MonoBehaviour
 	{
+		[Header("References")]
 		[SerializeField] GameObject _defaultCamera;
-
-		PlayerConnector _connector;
-		LobbyManager _lobby;
-
 		[SerializeField] GameObject _startGameButton;
 		[SerializeField] GameObject _createLobbyButton;
 		[SerializeField] GameObject _joinLobbyButton;
 		[SerializeField] TextMeshProUGUI _playerCountText;
 		[SerializeField] TMP_InputField _inputField;
+
+		PlayerConnector _connector;
+		LobbyManager _lobby;
 
 		bool _isHost = false;
 
@@ -29,8 +27,8 @@ namespace Seance.UI.Lobby
 			_connector = GameManager.Connector;
 			_lobby = GameManager.Lobby;
 
-			LobbyManager.OnConnectionCountChange += OnConnectionCountChange;
-			LobbyManager.OnClientSetup += SetupClient;
+			LobbyManager.ChangeConnectionCount += OnConnectionCountChange;
+			LobbyManager.ClientSetup += SetupClient;
 		}
 
 		public void CreateLobbyButton()
@@ -63,8 +61,8 @@ namespace Seance.UI.Lobby
 
 		void SetupClient()
 		{
-			LobbyManager.OnConnectionCountChange -= OnConnectionCountChange;
-			LobbyManager.OnClientSetup -= SetupClient;
+			LobbyManager.ChangeConnectionCount -= OnConnectionCountChange;
+			LobbyManager.ClientSetup -= SetupClient;
 			gameObject.SetActive(false);
 		}
 
@@ -75,11 +73,10 @@ namespace Seance.UI.Lobby
 			if (!_isHost)
 				return;
 
-			if (_lobby._connectionCount == 3)
+			if (_lobby.ConnectionCount == 3)
 				_startGameButton.SetActive(true);
 			else
 				_startGameButton.SetActive(false);
 		}
-
 	}
 }

@@ -1,10 +1,8 @@
 /// Author: Nicolas Capelier
 /// Last modified by: Nicolas Capelier
 
-using FishNet.Connection;
 using FishNet.Object;
 using Seance.Networking;
-using Seance.PostProcess;
 using UnityEngine;
 
 namespace Seance.Wayfarer
@@ -17,22 +15,18 @@ namespace Seance.Wayfarer
 		[Header("References")]
 		[SerializeField] Transform _renderer;
 		[SerializeField] Transform[] _positions;
-		[SerializeField] AudioClip[] _punishClips;
-		int _lastClip = -1;
 
 		LobbyManager _lobby;
-		PostProcessManager _postProcessManager;
 
 		QuaternionLerper _lerper = new();
-		int _currentTarget;
-		public int CurrentTarget { get { return _currentTarget; } }
+		int _currentTarget = -1;
+		public int CurrentTarget { get => _currentTarget; }
 		bool _isRotating;
-		public bool IsRotating { get { return _isRotating; } }
+		public bool IsRotating { get => _isRotating; }
 
 		private void Start()
 		{
 			_lobby = GameManager.Lobby;
-			_postProcessManager = GameManager.PostProcessManager;
 		}
 
 		public void MoveToPosition(int positionIndex)
@@ -50,33 +44,13 @@ namespace Seance.Wayfarer
 
 			_isRotating = true;
 
-			if (positionIndex == _lobby._ownedConnectionReferencePosition)
-				_postProcessManager.SetPostProcess(PostProcessType.Watched);
-			else
-				_postProcessManager.SetPostProcess(PostProcessType.Base);
-
 			_currentTarget = positionIndex;
 
 			Quaternion origin = _renderer.rotation;
 
-			int index = _lobby._playerInstances[positionIndex].WorldPositionIndex;
+			int index = _lobby.PlayerInstances[positionIndex].WorldPositionIndex;
 
 			_lerper.Lerp(origin, _positions[index].rotation, _headMovementTime, delta => _renderer.rotation = delta, () => _isRotating = false);
-		}
-
-		[TargetRpc]
-		public void TargetPunishPlayer(NetworkConnection conn)
-		{
-			GameManager.LevelElements.PlayerHealthDice.DecreaseDiceValue(2);
-			_postProcessManager.SetPostProcess(PostProcessType.Spotted);
-			int clip = Random.Range(0, _punishClips.Length);
-			while (clip == _lastClip)
-			{
-				clip = Random.Range(0, _punishClips.Length);
-			}
-			_lastClip = clip;
-			GameManager.AudioManager.PlayWayfarerVoice(_punishClips[clip]);
-			GameManager.DialogManager.PlaySingleLine("Dialogs/PunishText.txt", clip);
 		}
 	}
 }

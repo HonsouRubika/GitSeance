@@ -8,7 +8,7 @@ using UnityEngine;
 
 namespace Seance.TurnSystem
 {
-	public class TurnStateMachine : MonoStateMachine // NetworkBehaviour inherited class
+	public class TurnStateMachine : MonoStateMachine
 	{
 		[Header("Params")]
 		public StartingDeck[] _startingDecks;
@@ -25,103 +25,20 @@ namespace Seance.TurnSystem
 		bool _isPlaying;
 		public bool IsPlaying { get { return _isPlaying; } }
 
-		[Header("References")]
-		[SerializeField] PlayerTurnState _playerTurn;
-		public PlayerTurnState PlayerTurn { get { return _playerTurn; } }
+		[Header("States")]
+		[SerializeField] IntroductionState _introductionState;
+		public IntroductionState IntroductionState => _introductionState;
 
-		//[HideInInspector] public int[] _chapterTurnOrder = new int[4];
+		[SerializeField] NewChapterState _newChapterState;
+		public NewChapterState NewChapterState => _newChapterState;
 
-		[ServerRpc(RequireOwnership = false)]
-		public void ServerPlayNextTurn()
-		{
-			if (!IsServer) //may be useless => requieres further testing
-				return;
+		[SerializeField] EndChapterState _endChapterState;
+		public EndChapterState EndChapterState => _endChapterState;
 
-			_activePlayer++;
-			if (_activePlayer > 2)
-			{
-				_activePlayer = 0;
-				ObserversDecreaseAllPlayersDiceValue();
-			}
+		[SerializeField] PlayerTurnState _playerTurnState;
+		public PlayerTurnState PlayerTurnState => _playerTurnState;
 
-			ObserversPlayNextTurn(_activePlayer);
-		}
-
-		[ObserversRpc]
-		public void ObserversPlayNextTurn(int nextPlayer)
-		{
-			_isPlaying = false;
-			_activePlayer = nextPlayer;
-
-			if (GameManager.Lobby._ownedConnectionReferencePosition == _activePlayer)
-				_isPlaying = true;
-
-			GameManager.WayfarerAI.MoveToPosition(nextPlayer, true);
-
-			SetState("PlayerTurn", true);
-		}
-
-		[ObserversRpc]
-		public void ObserversDecreaseAllPlayersDiceValue()
-		{
-			GameManager.LevelElements.PlayerHealthDice.DecreaseDiceValue();
-		}
-
-		[ServerRpc(RequireOwnership = false)]
-		public void ServerSetWayfarerTarget(int playerIndex, bool punish)
-		{
-			ObserversSetWayfarerTarget(playerIndex);
-			if (punish)
-				GameManager.WayfarerAI.TargetPunishPlayer(GameManager.Lobby._connections[playerIndex]);
-		}
-
-		[ObserversRpc]
-		public void ObserversSetWayfarerTarget(int playerIndex)
-		{
-			GameManager.WayfarerAI.MoveToPosition(playerIndex);
-		}
-
-		/// Turn order system with random first player
-
-		//public void SetChapterTurnOrder(int firstPlayerIndex)
-		//{
-		//	_chapterTurnOrder[0] = firstPlayerIndex;
-		//	for (int i = 1; i < 3; i++)
-		//	{
-		//		firstPlayerIndex++;
-		//		if (firstPlayerIndex > 2)
-		//			firstPlayerIndex = 0;
-
-		//		_chapterTurnOrder[i] = firstPlayerIndex;
-		//	}
-
-		//	_chapterTurnOrder[3] = 3;
-		//	_activePlayer = 0;
-		//}
-
-		//public void StartPlayerTurn(int playerIndex)
-		//{
-		//	if (_chapterTurnOrder[_activePlayer] != 3)
-		//	{
-		//		//send new turn command to player _chapterTurnOrder[_activePlayer]
-		//	}
-		//	else
-		//	{
-		//		//start wayfarer turn
-		//	}
-		//}
-
-		//public void StartNextPlayerTurn()
-		//{
-		//	_activePlayer++;
-		//	if (_activePlayer > 3)
-		//	{
-		//		_activePlayer = 0;
-		//	}
-
-		//	StartPlayerTurn(_activePlayer);
-		//}
-
-
+		[SerializeField] WayfarerTurnState _wayfarerTurnState;
+		public WayfarerTurnState WayfarerTurnState => _wayfarerTurnState;
 	}
 }

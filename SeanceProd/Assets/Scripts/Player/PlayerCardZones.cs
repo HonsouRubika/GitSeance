@@ -12,9 +12,12 @@ namespace Seance.Player
 {
     public class PlayerCardZones : MonoBehaviour
     {
-        public List<PlayCard> _deck = new();
-        public List<PlayCard> _hand = new();
-        public List<PlayCard> _discard = new();
+        List<PlayCard> _deck = new();
+        public List<PlayCard> Deck { get => _deck; }
+        List<PlayCard> _hand = new();
+        public List<PlayCard> Hand { get => _hand; }
+        List<PlayCard> _discard = new();
+        public List<PlayCard> Discard { get => _discard; }
 
         public void Init(List<PlayCard> cards)
         {

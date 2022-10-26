@@ -1,5 +1,5 @@
 /// Author: Julien Haigron
-/// Last modified by: Julien Haigron
+/// Last modified by: Nicolas Capelier
 
 using System.Collections;
 using System.Collections.Generic;
@@ -10,11 +10,7 @@ namespace Seance.Interactions
 {
 	public class RollDiceInteractor : Interactor
 	{
-		public Dice20 _dice;
-
-		[SerializeField] AudioClip[] _diceClips;
-
-		int _lastDiceClip = -1;
+		Dice20 _dice;
 
 		private void Start()
 		{
@@ -24,20 +20,7 @@ namespace Seance.Interactions
 		// Start is called before the first frame update
 		public override void Interact()
 		{
-			if (_dice.DiceValue < 20)
-			{
-				int clip = Random.Range(0, _diceClips.Length);
-
-				while (_lastDiceClip == clip)
-				{
-					clip = Random.Range(0, _diceClips.Length);
-				}
-				_lastDiceClip = clip;
-				GameManager.AudioManager.PlayEffectOnTmpSource(_diceClips[clip]);
-			}
-
 			//turn.PlayerCheatedDice();
-
 			_dice.IncreaseDiceValue();
 		}
 	}

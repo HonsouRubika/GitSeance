@@ -23,7 +23,7 @@ namespace Seance.Player
 
 			RaycastHit hit;
 
-			Ray ray = GameManager.Lobby._ownedPlayerInstance.CameraController.Camera.ScreenPointToRay(Input.mousePosition);
+			Ray ray = GameManager.Lobby.OwnedPlayerInstance.CameraController.Camera.ScreenPointToRay(Input.mousePosition);
 
 			if (_debugRaycasts)
 				Debug.DrawRay(ray.origin, ray.direction * 50f, Color.red, .8f);

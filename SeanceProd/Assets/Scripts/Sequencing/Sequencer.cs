@@ -6,7 +6,7 @@ using System;
 using UnityEngine;
 using UMO.Utility;
 
-namespace Seance.Utility
+namespace Seance.Sequencing
 {
 	public class Sequencer
 	{

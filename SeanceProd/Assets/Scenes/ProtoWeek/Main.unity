@@ -1117,7 +1117,7 @@ GameObject:
   - component: {fileID: 792229494}
   - component: {fileID: 792229493}
   m_Layer: 0
-  m_Name: Size Reference
+  m_Name: Table
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2088,9 +2088,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _stateName: PlayerTurn
-  _interactableLayer:
-    serializedVersion: 2
-    m_Bits: 64
   _knocksClips:
   - {fileID: 8300000, guid: deeda5cf4af5e3842852b484974f2702, type: 3}
   - {fileID: 8300000, guid: 81bbd0e4be4975049ac9990c5a5f4d19, type: 3}
@@ -2125,7 +2122,11 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 239cb7a6ebeceda44873b030069760eb, type: 2}
   _currentChapter: {fileID: 0}
   _gameStarted: 0
-  _playerTurn: {fileID: 1607681936}
+  _introductionState: {fileID: 1607681942}
+  _newChapterState: {fileID: 1607681939}
+  _endChapterState: {fileID: 1607681938}
+  _playerTurnState: {fileID: 1607681936}
+  _wayfarerTurnState: {fileID: 1607681935}
 --- !u!114 &1607681938
 MonoBehaviour:
   m_ObjectHideFlags: 0

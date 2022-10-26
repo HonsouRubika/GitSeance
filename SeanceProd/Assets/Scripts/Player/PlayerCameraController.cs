@@ -15,9 +15,9 @@ namespace Seance.Player
 
         [Header("Params")]
         [SerializeField] Vector2Int _startPosition;
-        [HideInInspector] public Vector2Int _currentPosition = new Vector2Int(-1, -1);
-        [HideInInspector] public string[,] _positions = new string[3,3];
-
+        Vector2Int _currentPosition = new Vector2Int(-1, -1);
+        public Vector2Int CurrentPosition { get => _currentPosition; }
+        string[,] _positions = new string[3,3];
         [SerializeField] float _cameraMovementCooldown = .15f;
 
         CountdownTimer _cameraMovementTimer = new CountdownTimer();

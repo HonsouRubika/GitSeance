@@ -6,7 +6,6 @@ using Seance.Level;
 using Seance.Networking;
 using UnityEngine;
 using UnityEngine.InputSystem;
-using Seance.TurnSystem;
 
 namespace Seance.Player
 {
@@ -47,9 +46,9 @@ namespace Seance.Player
 			if (!IsOwner)
 				return;
 
-			LobbyManager.OnClientSetup += SetupClient;
-			_lobby._ownedConnection = LocalConnection;
-			_lobby._ownedPlayerInstance = this;
+			LobbyManager.ClientSetup += SetupClient;
+			_lobby.OwnedConnection = LocalConnection;
+			_lobby.OwnedPlayerInstance = this;
 			_lobby.ServerAddConnection(LocalConnection);
 		}
 
@@ -76,24 +75,24 @@ namespace Seance.Player
 
 			//Find and set OwnedConnectionReferencePosition
 
-			for (int i = 0; i < _lobby._connections.Count; i++)
+			for (int i = 0; i < _lobby.Connections.Count; i++)
 			{
-				if (_lobby._connections[i].ClientId == _lobby._ownedConnection.ClientId)
+				if (_lobby.Connections[i].ClientId == _lobby.OwnedConnection.ClientId)
 				{
-					_lobby._ownedConnectionReferencePosition = i;
+					_lobby.OwnedConnectionIndex = i;
 					break;
 				}
 			}
 
 			//Set position of players
 
-			int positionIndex = _lobby._ownedConnectionReferencePosition;
+			int positionIndex = _lobby.OwnedConnectionIndex;
 
 			for (int i = 0; i < 3; i++)
 			{
-				_lobby._playerInstances[positionIndex].transform.position = _levelElements.PlayersSpawnPositions[i].position;
-				_lobby._playerInstances[positionIndex].transform.rotation = _levelElements.PlayersSpawnPositions[i].rotation;
-				_lobby._playerInstances[positionIndex].WorldPositionIndex = i;
+				_lobby.PlayerInstances[positionIndex].transform.position = _levelElements.PlayersSpawnPositions[i].position;
+				_lobby.PlayerInstances[positionIndex].transform.rotation = _levelElements.PlayersSpawnPositions[i].rotation;
+				_lobby.PlayerInstances[positionIndex].WorldPositionIndex = i;
 
 				positionIndex++;
 				if (positionIndex > 2)
@@ -102,7 +101,7 @@ namespace Seance.Player
 
 			//Set starting deck for this player
 
-			_zones.Init(GameManager.TurnStateMachine._startingDecks[_lobby._ownedConnectionReferencePosition]._cards);
+			_zones.Init(GameManager.TurnStateMachine._startingDecks[_lobby.OwnedConnectionIndex]._cards);
 
 			//Enable camera and set state to 'ready'
 

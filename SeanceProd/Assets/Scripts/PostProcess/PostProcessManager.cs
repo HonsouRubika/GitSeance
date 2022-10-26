@@ -1,7 +1,6 @@
 /// Author: Nicolas Capelier
 /// Last modified by: Nicolas Capelier
 
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Rendering;
@@ -19,8 +18,7 @@ namespace Seance.PostProcess
         [SerializeField] Volume _spottedVolume;
 
         Dictionary<PostProcessType, Volume> _volumes = new();
-
-        bool _isLerping;
+        bool _isLerping = false;
 
         private void Start()
         {
@@ -29,6 +27,7 @@ namespace Seance.PostProcess
             _volumes.Add(PostProcessType.Spotted, _spottedVolume);
 		}
 
+        //Needs an overload to force transition
         public void SetPostProcess(PostProcessType type)
         {
             if (_isLerping)

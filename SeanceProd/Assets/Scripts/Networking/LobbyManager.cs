@@ -17,37 +17,43 @@ namespace Seance.Networking
 	{
 		[Header("References")]
 		[SerializeField] LobbyUIMode _lobbyUIMode;
-		public LobbyUIMode LobbyUIMode { get { return _lobbyUIMode; }}
+		public LobbyUIMode LobbyUIMode { get { return _lobbyUIMode; } }
 
 		//Server only, used temporarily to track connected clients before game start
 		List<NetworkConnection> _serverConnections = new();
 
-		//List of all connected clients
-		[HideInInspector] public List<NetworkConnection> _connections = new();
+		//Server only, number of client set up and ready to start
+		int _readyCount = 0;
 
-		//Self position in _connections list
-		[HideInInspector] public int _ownedConnectionReferencePosition;
+		//List of all connected clients
+		List<NetworkConnection> _connections = new();
+		public List<NetworkConnection> Connections { get => _connections; }
 
 		//Owned network connection of this client
-		[HideInInspector] public NetworkConnection _ownedConnection;
+		NetworkConnection _ownedConnection;
+		public NetworkConnection OwnedConnection { get => _ownedConnection; set => _ownedConnection = value; }
+
+		//Self position in _connections list
+		int _ownedConnectionIndex;
+		public int OwnedConnectionIndex { get => _ownedConnectionIndex; set => _ownedConnectionIndex = value; }
 
 		//List if all player instances, setup when the game starts
-		[HideInInspector] public List<PlayerInstance> _playerInstances = new();
+		List<PlayerInstance> _playerInstances = new();
+		public List<PlayerInstance> PlayerInstances { get => _playerInstances; }
 
 		//Owned PlayerInstance object of this client
-		[HideInInspector] public PlayerInstance _ownedPlayerInstance;
+		PlayerInstance _ownedPlayerInstance;
+		public PlayerInstance OwnedPlayerInstance { get => _ownedPlayerInstance; set => _ownedPlayerInstance = value; }
 
 		//Current number of connected clients
-		[HideInInspector] public int _connectionCount = 0;
+		int _connectionCount = 0;
+		public int ConnectionCount { get => _connectionCount; }
 
 		//Called every time the connection count changes
-		public static Action<int> OnConnectionCountChange;
+		public static Action<int> ChangeConnectionCount;
 
 		//Called right before the game starts, used to set all server related variables on clients
-		public static Action OnClientSetup;
-
-		//Number of client set up and ready to start
-		int _readyCount = 0;
+		public static Action ClientSetup;
 
 		#region Lobby Creation
 
@@ -95,7 +101,7 @@ namespace Seance.Networking
 		public void ObserversUpdatePlayerCount(int count)
 		{
 			_connectionCount = count;
-			OnConnectionCountChange?.Invoke(_connectionCount);
+			ChangeConnectionCount?.Invoke(_connectionCount);
 		}
 
 		[ObserversRpc]
@@ -107,7 +113,7 @@ namespace Seance.Networking
 		[ObserversRpc]
 		public void ObserversSetupClient()
 		{
-			OnClientSetup?.Invoke();
+			ClientSetup?.Invoke();
 		}
 
 		[ServerRpc(RequireOwnership = false)]
@@ -126,7 +132,6 @@ namespace Seance.Networking
 		void ObserversStartGame()
 		{
 			GameManager.TurnStateMachine.Init();
-			//Init state machine
 		}
 
 		#endregion

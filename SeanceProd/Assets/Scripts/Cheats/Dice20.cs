@@ -1,10 +1,10 @@
-//using Seance.CameraManagement;
+/// Author: Julien Haigron
+/// Last modified by: Julien Haigron
+
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Rendering;
 using UnityEngine.Rendering.Universal;
-using UnityEngine.UIElements;
 
 namespace Seance.Interactions
 {
