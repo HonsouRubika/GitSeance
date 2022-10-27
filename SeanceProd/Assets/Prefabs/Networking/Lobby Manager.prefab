@@ -49,9 +49,7 @@ MonoBehaviour:
   _componentIndexCache: 0
   _addedNetworkObject: {fileID: 1639423342698695604}
   _networkObjectCache: {fileID: 1639423342698695604}
-  _ownedConnectionReferencePosition: 0
-  _ownedPlayerInstance: {fileID: 0}
-  _connectionCount: 0
+  _lobbyUIMode: {fileID: 0}
 --- !u!114 &1639423342698695604
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -1,17 +1,17 @@
-//using Seance.CameraManagement;
+/// Author: Julien Haigron
+/// Last modified by: Julien Haigron
+
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Rendering;
 using UnityEngine.Rendering.Universal;
-using UnityEngine.UIElements;
 
 namespace Seance.Interactions
 {
 	/// <summary>
 	/// Edouard
 	/// </summary>
-	public class Dice20 : Singleton<Dice20>
+	public class Dice20 : MonoBehaviour
 	{
 		[Header("Dice")]
 		[SerializeField] private int _diceValue = 20;

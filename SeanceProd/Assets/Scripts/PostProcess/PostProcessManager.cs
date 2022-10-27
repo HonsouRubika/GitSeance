@@ -1,7 +1,6 @@
 /// Author: Nicolas Capelier
 /// Last modified by: Nicolas Capelier
 
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Rendering;
@@ -10,8 +9,6 @@ namespace Seance.PostProcess
 {
     public class PostProcessManager : MonoBehaviour
     {
-        public static PostProcessManager Instance;
-
         [Header("Params")]
         [SerializeField] [Range(0f, 5f)] float _transitionDuration = 1f;
 
@@ -21,13 +18,7 @@ namespace Seance.PostProcess
         [SerializeField] Volume _spottedVolume;
 
         Dictionary<PostProcessType, Volume> _volumes = new();
-
-        bool _isLerping;
-
-        private void Awake()
-        {
-            Instance = this;
-        }
+        bool _isLerping = false;
 
         private void Start()
         {
@@ -36,6 +27,7 @@ namespace Seance.PostProcess
             _volumes.Add(PostProcessType.Spotted, _spottedVolume);
 		}
 
+        //Needs an overload to force transition
         public void SetPostProcess(PostProcessType type)
         {
             if (_isLerping)

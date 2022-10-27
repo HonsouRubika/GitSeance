@@ -10,9 +10,9 @@ namespace Seance.Interactions
 {
     public class EndTurnInteractor : Interactor
     {
-        public override void Interact(PlayerTurnState turn)
+        public override void Interact()
         {
-            turn.EndTurn();
+            //turn.EndTurn();
         }
     }
 }

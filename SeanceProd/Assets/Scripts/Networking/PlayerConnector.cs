@@ -1,3 +1,6 @@
+/// Author: Nicolas Capelier
+/// Last modified by: Nicolas Capelier
+
 using FishNet.Managing;
 using System.Collections;
 using UnityEngine;
@@ -12,17 +15,6 @@ namespace Seance.Networking
 
 		[Header("Params")]
 		[SerializeField] ushort _serverPort;
-
-		#region Singleton
-
-		public static PlayerConnector Instance;
-
-		private void Awake()
-		{
-			Instance = this;
-		}
-
-		#endregion
 
         public void CreateLobby()
 		{

@@ -10,59 +10,74 @@ using UnityEditor.SceneManagement;
 
 namespace UMO.Tools.SceneViewer
 {
-    public class SceneViewerWindow : EditorWindow
-    {
-        static SceneViewerWindow sceneViewer;
-        Vector2 scrollPosition = Vector2.zero;
+	public class SceneViewerWindow : EditorWindow
+	{
+		static SceneViewerWindow sceneViewer;
+		Vector2 scrollPosition = Vector2.zero;
 
-        [MenuItem("Window/General/Scene Viewer", priority = 1)]
-        public static void Init()
-        {
-            sceneViewer = GetWindow<SceneViewerWindow>("Scene Viewer");
-            sceneViewer.RefreshScenes();
-        }
+		[MenuItem("Window/General/Scene Viewer", priority = 1)]
+		public static void Init()
+		{
+			sceneViewer = GetWindow<SceneViewerWindow>("Scene Viewer");
+			sceneViewer.RefreshScenes();
+		}
 
-        string[] scenesGUIDs;
-        string currentFolderName;
-        string[] items;
+		string[] scenesGUIDs;
+		string currentFolderName;
+		string currentSubFolderName;
+		string[] items;
 
-        bool refreshed = false;
+		bool refreshed = false;
 
-        GUIStyle titleStyle;
-        GUIStyle GetTitleStyle()
-        {
-            GUIStyle _style = new GUIStyle();
+		GUIStyle titleStyle;
+		GUIStyle GetTitleStyle()
+		{
+			GUIStyle _style = new GUIStyle();
 
-            _style.alignment = TextAnchor.MiddleCenter;
-            _style.fontStyle = FontStyle.Bold;
-            _style.fontSize = 24;
-            _style.normal.textColor = Color.white;
+			_style.alignment = TextAnchor.MiddleCenter;
+			_style.fontStyle = FontStyle.Bold;
+			_style.fontSize = 24;
+			_style.normal.textColor = Color.white;
 
-            return _style;
-        }
+			return _style;
+		}
 
-        GUIStyle buttonStyle;
-        GUIStyle GetButtonStyle()
-        {
-            GUIStyle _style = new GUIStyle(GUI.skin.button);
+		GUIStyle subFolderStyle;
+		GUIStyle GetSubFolderStyle()
+		{
+			GUIStyle _style = new GUIStyle();
 
-            _style.fontStyle = FontStyle.Bold;
-            _style.fontSize = 16;
-            _style.normal.textColor = Color.white;
+			_style.alignment = TextAnchor.MiddleLeft;
+			_style.fontStyle = FontStyle.Normal;
+			_style.fontSize = 18;
+			_style.normal.textColor = Color.white;
 
-            return _style;
-        }
+			return _style;
+		}
 
-        void RefreshScenes()
-        {
-            scenesGUIDs = AssetDatabase.FindAssets("t:Scene");
-            refreshed = true;
-        }
+		GUIStyle buttonStyle;
+		GUIStyle GetButtonStyle()
+		{
+			GUIStyle _style = new GUIStyle(GUI.skin.button);
 
-        private void OnGUI()
-        {
-            titleStyle = GetTitleStyle();
-            buttonStyle = GetButtonStyle();
+			_style.fontStyle = FontStyle.Bold;
+			_style.fontSize = 16;
+			_style.normal.textColor = Color.white;
+
+			return _style;
+		}
+
+		void RefreshScenes()
+		{
+			scenesGUIDs = AssetDatabase.FindAssets("t:Scene");
+			refreshed = true;
+		}
+
+		private void OnGUI()
+		{
+			titleStyle = GetTitleStyle();
+			buttonStyle = GetButtonStyle();
+			subFolderStyle = GetSubFolderStyle();
 
 			if (GUILayout.Button("Refresh project scenes", buttonStyle))
 			{
@@ -70,52 +85,59 @@ namespace UMO.Tools.SceneViewer
 			}
 
 			if (scenesGUIDs == null || (scenesGUIDs.Length == 0 && !refreshed))
-                RefreshScenes();
+				RefreshScenes();
 
-            currentFolderName = "";
+			currentFolderName = "";
 
-            scrollPosition = EditorGUILayout.BeginScrollView(scrollPosition);
+			scrollPosition = EditorGUILayout.BeginScrollView(scrollPosition);
 
-            EditorGUILayout.Space(5f);
+			EditorGUILayout.Space(5f);
 
-            foreach (string sceneGUID in scenesGUIDs)
-            {
-                items = AssetDatabase.GUIDToAssetPath(sceneGUID).Split('/');
+			foreach (string sceneGUID in scenesGUIDs)
+			{
+				items = AssetDatabase.GUIDToAssetPath(sceneGUID).Split('/');
 
-                if (items[1] != "Scenes")
-                    continue;
+				if (items[1] != "Scenes")
+					continue;
 
-                if (currentFolderName != items[items.Length - 2])
-                {
-                    EditorGUILayout.Space(5f);
-                    currentFolderName = items[items.Length - 2];
-                    GUILayout.Label(currentFolderName, titleStyle);
-                }
-
-                GUILayout.BeginHorizontal();
-                if (GUILayout.Button(items[items.Length - 1].Remove(items[items.Length - 1].Length - 6), buttonStyle))
-                {
-                    if (EditorSceneManager.SaveCurrentModifiedScenesIfUserWantsTo())
-                    {
-                        try
-                        {
-                            EditorSceneManager.OpenScene(AssetDatabase.GUIDToAssetPath(sceneGUID).ToString());
-                        }
-                        catch
-                        {
-                            Debug.LogError("Scene not found, try refreshing the scene viewer.");
-                        }
-                    }
-                }
-
-                if(GUILayout.Button("Add", buttonStyle, GUILayout.Width(50f)))
+				if (currentFolderName != items[items.Length - 3])
 				{
-                    EditorSceneManager.OpenScene(AssetDatabase.GUIDToAssetPath(sceneGUID).ToString(), OpenSceneMode.Additive);
+					EditorGUILayout.Space(5f);
+					currentFolderName = items[items.Length - 3];
+					GUILayout.Label(currentFolderName, titleStyle);
 				}
-                GUILayout.EndHorizontal();
-            }
 
-            EditorGUILayout.EndScrollView();
-        }
-    }
+				if(currentSubFolderName != items[items.Length - 2])
+				{
+					EditorGUILayout.Space(2f);
+					currentSubFolderName = items[items.Length - 2];
+					GUILayout.Label($"  {currentSubFolderName}", subFolderStyle);
+				}
+
+				GUILayout.BeginHorizontal();
+				if (GUILayout.Button(items[items.Length - 1].Remove(items[items.Length - 1].Length - 6), buttonStyle))
+				{
+					if (EditorSceneManager.SaveCurrentModifiedScenesIfUserWantsTo())
+					{
+						try
+						{
+							EditorSceneManager.OpenScene(AssetDatabase.GUIDToAssetPath(sceneGUID).ToString());
+						}
+						catch
+						{
+							Debug.LogError("Scene not found, try refreshing the scene viewer.");
+						}
+					}
+				}
+
+				if (GUILayout.Button("Add", buttonStyle, GUILayout.Width(50f)))
+				{
+					EditorSceneManager.OpenScene(AssetDatabase.GUIDToAssetPath(sceneGUID).ToString(), OpenSceneMode.Additive);
+				}
+				GUILayout.EndHorizontal();
+			}
+
+			EditorGUILayout.EndScrollView();
+		}
+	}
 }

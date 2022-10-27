@@ -6,7 +6,7 @@ using System;
 using UnityEngine;
 using UMO.Utility;
 
-namespace Seance.Utility
+namespace Seance.Sequencing
 {
 	public class Sequencer
 	{
@@ -172,9 +172,9 @@ namespace Seance.Utility
 				_duration = duration;
 			}
 
-			public TimedEvent(float duration, Action action)
+			public TimedEvent(float duration, Action beginAction)
 			{
-				_beginAction = action;
+				_beginAction = beginAction;
 				_duration = duration;
 				_endAction = null;
 			}

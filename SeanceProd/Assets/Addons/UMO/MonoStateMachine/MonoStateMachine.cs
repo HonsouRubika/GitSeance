@@ -1,9 +1,6 @@
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-using System;
-using FishNet;
 using FishNet.Object;
+using System;
+using UnityEngine;
 
 public abstract class MonoStateMachine : NetworkBehaviour
 {
@@ -23,9 +20,9 @@ public abstract class MonoStateMachine : NetworkBehaviour
 
 	public void SetState(string newState, bool forceState)
 	{
-		foreach(MonoState monoState in _monoStates)
+		foreach (MonoState monoState in _monoStates)
 		{
-			if(monoState.StateName == newState)
+			if (monoState.StateName == newState)
 			{
 				SetState(monoState, forceState);
 				break;
@@ -43,13 +40,23 @@ public abstract class MonoStateMachine : NetworkBehaviour
 		if (newState == null)
 			throw new ArgumentNullException();
 
-		if(newState != _activeState || forceState)
+		if (newState != _activeState || forceState)
 		{
-			if(_activeState != null)
+			if (_activeState != null)
 				_activeState.OnStateExit();
 			_activeState = newState;
 			_activeState.OnStateEnter();
 		}
+	}
+
+	public MonoState GetActiveState()
+	{
+		return _activeState;
+	}
+
+	public string GetActiveStateName()
+	{
+		return _activeState.StateName;
 	}
 
 	[ObserversRpc]

@@ -6,28 +6,31 @@ using Seance.Level;
 using Seance.Networking;
 using UnityEngine;
 using UnityEngine.InputSystem;
-using Seance.CardSystem;
-using Seance.TurnSystem;
-using System.Collections.Generic;
 
 namespace Seance.Player
 {
 	public class PlayerInstance : NetworkBehaviour
 	{
-		LobbyManager _lobby;
-		LevelReferences _levelReferences;
-
 		[Header("References")]
-		[SerializeField] GameObject _cameraParent;
-		[SerializeField] PlayerInputManager _inputManager;
-		public PlayerInputManager InputManager { get { return _inputManager; } }
-		public GameObject CameraParent { get { return _cameraParent; } }
+		[SerializeField] PlayerInputHandler _inputHandler;
+		public PlayerInputHandler InputHandler { get { return _inputHandler; } }
+
 		[SerializeField] PlayerCameraController _cameraController;
 		public PlayerCameraController CameraController { get { return _cameraController; } }
-		[SerializeField] PlayerInput _input;
-		[Space]
+
+		[SerializeField] Transform _cameraParent;
+		public Transform CameraParent { get => _cameraParent; }
+
 		[SerializeField] PlayerCardZones _zones;
-		[HideInInspector] public int _worldPositionIndex;
+		public PlayerCardZones Zones { get { return _zones; } }
+
+		[HideInInspector] private int worldPositionIndex;
+		public int WorldPositionIndex { get => worldPositionIndex; set => worldPositionIndex = value; }
+
+		[Space]
+		LobbyManager _lobby;
+		LevelElements _levelElements;
+		[SerializeField] PlayerInput _playerInput;
 
 		#region Connection to server
 
@@ -35,17 +38,17 @@ namespace Seance.Player
 		{
 			base.OnStartClient();
 
-			_lobby = LobbyManager.Instance;
-			_levelReferences = LevelReferences.Instance;
+			_lobby = GameManager.Lobby;
+			_levelElements = GameManager.LevelElements;
 
 			_lobby.AddPlayerInstance(this);
 
 			if (!IsOwner)
 				return;
 
-			LobbyManager.OnClientSetup += SetupClient;
-			_lobby._ownedConnection = LocalConnection;
-			_lobby._ownedPlayerInstance = this;
+			LobbyManager.ClientSetup += SetupClient;
+			_lobby.OwnedConnection = LocalConnection;
+			_lobby.OwnedPlayerInstance = this;
 			_lobby.ServerAddConnection(LocalConnection);
 		}
 
@@ -64,32 +67,32 @@ namespace Seance.Player
 			if (!IsOwner)
 			{
 				Destroy(_cameraParent.gameObject);
-				Destroy(_input);
+				Destroy(_playerInput);
 				return;
 			}
 
-			_input.enabled = true;
+			_playerInput.enabled = true;
 
 			//Find and set OwnedConnectionReferencePosition
 
-			for (int i = 0; i < _lobby._connections.Count; i++)
+			for (int i = 0; i < _lobby.Connections.Count; i++)
 			{
-				if (_lobby._connections[i].ClientId == _lobby._ownedConnection.ClientId)
+				if (_lobby.Connections[i].ClientId == _lobby.OwnedConnection.ClientId)
 				{
-					_lobby._ownedConnectionReferencePosition = i;
+					_lobby.OwnedConnectionIndex = i;
 					break;
 				}
 			}
 
 			//Set position of players
 
-			int positionIndex = _lobby._ownedConnectionReferencePosition;
+			int positionIndex = _lobby.OwnedConnectionIndex;
 
 			for (int i = 0; i < 3; i++)
 			{
-				_lobby._playerInstances[positionIndex].transform.position = _levelReferences._playersTransform[i].position;
-				_lobby._playerInstances[positionIndex].transform.rotation = _levelReferences._playersTransform[i].rotation;
-				_lobby._playerInstances[positionIndex]._worldPositionIndex = i;
+				_lobby.PlayerInstances[positionIndex].transform.position = _levelElements.PlayersSpawnPositions[i].position;
+				_lobby.PlayerInstances[positionIndex].transform.rotation = _levelElements.PlayersSpawnPositions[i].rotation;
+				_lobby.PlayerInstances[positionIndex].WorldPositionIndex = i;
 
 				positionIndex++;
 				if (positionIndex > 2)
@@ -98,11 +101,11 @@ namespace Seance.Player
 
 			//Set starting deck for this player
 
-			_zones.Init(TurnStateMachine.Instance._startingDecks[_lobby._ownedConnectionReferencePosition]._cards);
+			_zones.Init(GameManager.TurnStateMachine._startingDecks[_lobby.OwnedConnectionIndex]._cards);
 
 			//Enable camera and set state to 'ready'
 
-			_cameraParent.SetActive(true);
+			_cameraParent.gameObject.SetActive(true);
 
 			_lobby.ServerAddPlayerReady();
 		}
