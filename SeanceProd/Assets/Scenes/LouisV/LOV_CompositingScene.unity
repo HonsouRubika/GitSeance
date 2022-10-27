@@ -157,7 +157,7 @@ Camera:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 635625020}
-  m_Enabled: 1
+  m_Enabled: 0
   serializedVersion: 2
   m_ClearFlags: 1
   m_BackGroundColor: {r: 0.19215687, g: 0.3019608, b: 0.4745098, a: 0}
@@ -423,6 +423,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: TransformedRoom
       objectReference: {fileID: 0}
+    - target: {fileID: 3310955664141205317, guid: 9d5ce94668d2c1648b1eece85f00509a,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 9d5ce94668d2c1648b1eece85f00509a, type: 3}
 --- !u!1001 &7478062503590710975
@@ -491,6 +496,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: RealRoom
+      objectReference: {fileID: 0}
+    - target: {fileID: 7478062502403756594, guid: 624db23fe3d0b954ca0a159df63bf227,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 624db23fe3d0b954ca0a159df63bf227, type: 3}
