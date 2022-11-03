@@ -134,9 +134,11 @@ MonoBehaviour:
   _cardInfo: {fileID: 0}
   _handYPos: 4.5
   _hoveringTableYPosOffset: 3
-  _hoveringHandYPosOffset: 4
+  _hoveringHandYPosOffset: 5.5
   _cardXRotOnHand: -30
   _cost: 0
+  _originZone: {fileID: 0}
+  _isMouseOn: 0
 --- !u!65 &6424765308832367631
 BoxCollider:
   m_ObjectHideFlags: 0

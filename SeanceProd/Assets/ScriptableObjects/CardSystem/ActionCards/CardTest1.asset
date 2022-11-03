@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _name: Test1
   _picture: {fileID: 0}
-  _description: 
-  _targets: 
-  _effects: 
-  _effectsValues: 
+  _description: Draw one card
+  _targets: 00000000
+  _effects: 04000000
+  _effectsValues: 01000000

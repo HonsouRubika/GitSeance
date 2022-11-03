@@ -40,6 +40,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5476078700388040997}
+  - component: {fileID: 7891331312979874685}
   - component: {fileID: 7875427402821084767}
   m_Layer: 0
   m_Name: TmpPlayer
@@ -65,6 +66,20 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &7891331312979874685
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7100224811823578553}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 15c66f9af83ad324ca860e20cfe1a259, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _maxHp: 10
+  _maxArmor: 3
 --- !u!114 &7875427402821084767
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -80,20 +95,26 @@ MonoBehaviour:
   _deck: []
   _hand: []
   _discard: []
-  _currentCardSeleted: {fileID: 0}
   _cardsInformations:
   - {fileID: 11400000, guid: e98553b4640d18e42b0fce11eedebc9a, type: 2}
-  - {fileID: 11400000, guid: f852ab3d66b164d43857b9701d35f4b5, type: 2}
-  - {fileID: 11400000, guid: f852ab3d66b164d43857b9701d35f4b5, type: 2}
-  - {fileID: 11400000, guid: f852ab3d66b164d43857b9701d35f4b5, type: 2}
-  - {fileID: 11400000, guid: f852ab3d66b164d43857b9701d35f4b5, type: 2}
+  - {fileID: 11400000, guid: e98553b4640d18e42b0fce11eedebc9a, type: 2}
+  - {fileID: 11400000, guid: e98553b4640d18e42b0fce11eedebc9a, type: 2}
+  - {fileID: 11400000, guid: e98553b4640d18e42b0fce11eedebc9a, type: 2}
+  - {fileID: 11400000, guid: e98553b4640d18e42b0fce11eedebc9a, type: 2}
+  - {fileID: 11400000, guid: e98553b4640d18e42b0fce11eedebc9a, type: 2}
+  - {fileID: 11400000, guid: e98553b4640d18e42b0fce11eedebc9a, type: 2}
+  - {fileID: 11400000, guid: e98553b4640d18e42b0fce11eedebc9a, type: 2}
   _cardPrefab: {fileID: 8962741519445688022, guid: 38d67d899ac1c4c45ab3ab78341eeffb,
     type: 3}
+  _player: {fileID: 7891331312979874685}
+  _isPlayerDraggingCard: 0
   _deckPosition: {fileID: 6486990145108107649}
   _handPosition: {fileID: 4172088810534922734}
   _defaultOffsetYCardsOnDeck: 1
-  _defaultOffsetXCardsOnHand: 1
+  _defaultOffsetXCardsOnHand: 1.5
   _defaultOffsetYCardsOnHand: 0.1
+  _defaultOffsetXHoveringCardOnHand: 0.05
+  _defaultOffsetYHoveringCardOnHand: 0.05
   _defaultRotationOffsetCardsOnHand: 6
 --- !u!1 &8522878993110212519
 GameObject:
