@@ -102,6 +102,8 @@ namespace Seance.Player
 			//Set starting deck for this player
 
 			_zones.Init(GameManager.TurnStateMachine._startingDecks[_lobby.OwnedConnectionIndex]._cards);
+			///TODO : Link to new system
+			//_zones.Init(TurnStateMachine.Instance._startingDecks[_lobby._ownedConnectionReferencePosition]._cards);
 
 			//Enable camera and set state to 'ready'
 

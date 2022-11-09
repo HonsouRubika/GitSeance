@@ -9,6 +9,6 @@ namespace Seance.CardSystem
     [CreateAssetMenu(fileName = "New Starting Deck", menuName = "Scriptable Objects/Card System/Starting Deck", order = 50)]
     public class StartingDeck : ScriptableObject
     {
-        public List<PlayCard> _cards;
+        public List<ActionCard> _cards;
     }
 }
